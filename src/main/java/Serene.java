@@ -59,6 +59,13 @@ public class Serene {
                     System.out.println(newTask);
                     String message = String.format("Now you have %d tasks in the list.", history.size());
                     System.out.println(message);
+                } else if (parts[0].equals("delete")) {
+                    Task toDelete = history.get(Integer.parseInt(parts[1]) - 1);
+                    history.remove(Integer.parseInt(parts[1]) - 1);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println(toDelete);
+                    String message = String.format("Now you have %d tasks in the list.", history.size());
+                    System.out.println(message);
                 } else {
                     throw new SereneException("um...what?");
                 }

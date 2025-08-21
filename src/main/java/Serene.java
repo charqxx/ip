@@ -3,20 +3,31 @@ import java.util.ArrayList;
 public class Serene {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        ArrayList<String> history = new ArrayList<>();
+        ArrayList<Task> history = new ArrayList<>();
 
         System.out.println("Hello! I'm Serene\nWhat can I do for you?");
         while(true) {
             String input = sc.nextLine();
+            String[] parts = input.split(" ");
             if (input.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else if (input.equals("list")) {
-                for (int i=0; i < history.size(); i++) {
+                for (int i = 0; i < history.size(); i++) {
                     System.out.println((i + 1) + ". " + history.get(i));
                 }
+            } else if (parts[0].equals("mark")) {
+                Task toMark = history.get(Integer.parseInt(parts[1]) - 1);
+                toMark.mark();
+                System.out.println("Nice! I've marked this task as done:");
+                System.out.println(toMark.toString());
+            } else if (parts[0].equals("unmark")) {
+                Task toUnmark = history.get(Integer.parseInt(parts[1]) - 1);
+                toUnmark.unmark();
+                System.out.println("Ok, I've marked this task as not done yet:");
+                System.out.println(toUnmark.toString());
             } else {
-                history.add(input);
+                history.add(new Task(input));
                 System.out.println("added: " + input);
             }
         }

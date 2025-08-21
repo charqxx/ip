@@ -33,6 +33,16 @@ public class Serene {
                 System.out.println(newTask);
                 String message = String.format("Now you have %d tasks in the list.", history.size());
                 System.out.println(message);
+            } else if (parts[0].equals("deadline")) {
+                String taskWithDate = input.split(" ", 2)[1];
+                String task = taskWithDate.split(" /by ")[0];
+                String date = taskWithDate.split(" /by ")[1];
+                Deadline newTask = new Deadline(task, date);
+                history.add(newTask);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask);
+                String message = String.format("Now you have %d tasks in the list.", history.size());
+                System.out.println(message);
             } else {
                 history.add(new Task(input));
                 System.out.println("added: " + input);

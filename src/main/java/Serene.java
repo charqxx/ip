@@ -13,6 +13,7 @@ public class Serene {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else if (input.equals("list")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < history.size(); i++) {
                     System.out.println((i + 1) + ". " + history.get(i));
                 }

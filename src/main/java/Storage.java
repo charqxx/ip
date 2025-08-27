@@ -31,7 +31,7 @@ public class Storage {
         try {
             FileWriter fw = new FileWriter(filePath);
             for (Task task : tasks) {
-                fw.write(task.toString() +  "\n");
+                fw.write(task.toSaveFormat() +  "\n");
             }
             fw.close();
         } catch (IOException e) {
@@ -46,7 +46,7 @@ public class Storage {
             Scanner sc = new Scanner(file);
             while(sc.hasNextLine()) {
                 String line = sc.nextLine();
-                String[] parts = line.split(" | ");
+                String[] parts = line.split(" , ");
                 String type = parts[0];
                 boolean isDone = parts[1].equals("1");
                 String TaskName = parts[2];

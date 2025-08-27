@@ -11,6 +11,22 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    public void createSaveFile() {
+        try {
+            File file = new File(filePath);
+            File parentDir = file.getParentFile();
+
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdir();
+            }
+             if (!file.exists()) {
+                 file.createNewFile();
+             }
+        } catch (IOException e) {
+            System.out.println("Error while creating save file: " + e.getMessage());
+        }
+    }
+
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter fw = new FileWriter(filePath);

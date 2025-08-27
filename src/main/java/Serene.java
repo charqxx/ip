@@ -5,7 +5,8 @@ public class Serene {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Storage storage = new Storage("./data/serene.txt");
-        ArrayList<Task> history = new ArrayList<>();
+        storage.createSaveFile();
+        ArrayList<Task> history = storage.load();
 
         System.out.println("Hello! I'm Serene\nWhat can I do for you?");
         while(true) {
@@ -14,7 +15,7 @@ public class Serene {
                 String[] parts = input.split(" ");
                 if (input.isEmpty()) {
                     throw new SereneException("Don't be lazy, you have to do something!");
-                }else if (input.equals("bye")) {
+                } else if (input.equals("bye")) {
                     System.out.println("Bye. Hope to see you again soon!");
                     break;
                 } else if (input.equals("list")) {

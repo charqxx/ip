@@ -1,3 +1,5 @@
+package serene;
+
 public class SereneException extends Exception{
     public SereneException(String message) {
         super(message);

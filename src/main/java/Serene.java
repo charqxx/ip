@@ -6,7 +6,8 @@ public class Serene {
         Scanner sc = new Scanner(System.in);
         Storage storage = new Storage("./data/serene.txt");
         storage.createSaveFile();
-        ArrayList<Task> history = storage.load();
+        ArrayList<Task> history = new ArrayList<>(); //for debugging, rmbr to change back
+        //ArrayList<Task> history = storage.load();
 
         System.out.println("Hello! I'm Serene\nWhat can I do for you?");
         while(true) {

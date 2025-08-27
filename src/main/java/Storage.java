@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -60,7 +62,7 @@ public class Storage {
                     if (isDone) task.mark();
                     history.add(task);
                 } else if (type.equals("E")) {
-                    String[] fromTo = parts[3].split("-");
+                    String[] fromTo = parts[3].split(" /to ");
                     Task task = new Event(TaskName, fromTo[0], fromTo[1]);
                     if (isDone) task.mark();
                     history.add(task);

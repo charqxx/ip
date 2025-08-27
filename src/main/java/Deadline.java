@@ -14,7 +14,9 @@ public class Deadline extends Task {
 
     @Override
     public String toSaveFormat() {
-        return "D" + " , " + this.getIsDone() + " , " + description + " , " + by;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String byOutput = by.format(formatter);
+        return "D" + " , " + this.getIsDone() + " , " + description + " , " + byOutput;
     }
 
     @Override

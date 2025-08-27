@@ -14,7 +14,10 @@ public class Event extends Task{
 
     @Override
     public String toSaveFormat() {
-        return "E" + " , " + this.getIsDone() + " , " + description + " , " + from + "-" + to;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String fromOutput = from.format(formatter);
+        String toOutput = to.format(formatter);
+        return "E" + " , " + this.getIsDone() + " , " + description + " , " + fromOutput + " /to " + toOutput;
     }
 
     @Override

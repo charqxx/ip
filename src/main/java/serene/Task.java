@@ -4,7 +4,13 @@ public abstract class Task {
     protected String description;
     protected boolean isDone;
 
-
+    /**
+     * Constructs a new task with the given description.
+     * Task is initially marked as not done.
+     * Used by subclasses since it is an abstract class.
+     *
+     * @param description Description of task.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -19,6 +25,10 @@ public abstract class Task {
         return isDone ? 1 : 0;
     }
 
+    /**
+     * Returns the task in a string representation format suitable for saving into save file.
+     * @return Task in string representation.
+     */
     public abstract String toSaveFormat();
 
 
@@ -26,12 +36,16 @@ public abstract class Task {
         return description;
     }
 
-
+    /**
+     * Updates the task as done.
+     */
     public void mark() {
         isDone = true;
     }
 
-
+    /**
+     * Updates the task as not done.
+     */
     public void unmark() {
         isDone = false;
     }

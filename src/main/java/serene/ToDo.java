@@ -2,6 +2,10 @@ package serene;
 
 public class ToDo extends Task {
 
+    /**
+     * Constructs a ToDo task with the given desciption.
+     * @param description Description of Todo task.
+     */
     public ToDo(String description) {
         super(description);
     }

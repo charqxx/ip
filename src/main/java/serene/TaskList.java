@@ -9,14 +9,27 @@ public class TaskList {
         this.tasks = tasks;
     }
 
+    /**
+     * Creates a new empty TaskList.
+     */
     public TaskList() {
         this.tasks = new ArrayList<Task>();
     }
 
+    /**
+     * Adds a task into the TaskList.
+     *
+     * @param task Task to be added.
+     */
     public void add(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Removes the task at the index from the TaskList.
+     *
+     * @param index Index in the TaskList
+     */
     public void remove(int index) {
         tasks.remove((index));
     }

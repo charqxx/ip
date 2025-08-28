@@ -7,6 +7,14 @@ public class Event extends Task{
     protected LocalDateTime from;
     protected LocalDateTime to;
 
+    /**
+     * Creates a new Event task with specified description, start time, and end time.
+     * This task is initially marked as not done.
+     *
+     * @param description Description of Event task.
+     * @param from Start date and time of the event, in the format "yyyy-MM-dd HH:mm".
+     * @param to End date and time of the event, in the format "yyyy-MM-dd HH:mm".
+     */
     public Event(String description, String from, String to) {
         super(description);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

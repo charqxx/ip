@@ -7,7 +7,12 @@ public class Deadline extends Task {
 
     protected LocalDateTime by;
 
-    //accept yyy-mm-dd HH:mm, print MMM dd yyy
+    /**
+     * Creates new Deadline task with specified description and deadline
+     *
+     * @param description Description of Deadline task.
+     * @param by Due date and time of the task, in the format "yyyy-MM-dd HH:mm".
+     */
     public Deadline(String description, String by) {
         super(description);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

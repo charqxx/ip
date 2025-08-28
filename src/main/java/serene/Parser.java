@@ -3,6 +3,13 @@ package serene;
 import java.util.List;
 
 public class Parser {
+    /**
+     * Parses the user's input string and returns the Corresponding Command object.
+     *
+     * @param input String to be parsed.
+     * @return Command object.
+     * @throws SereneException If user gives an invalid input.
+     */
     public static Command parse(String input) throws SereneException {
         String[] parts = input.split(" ", 2);
         String command = parts[0];

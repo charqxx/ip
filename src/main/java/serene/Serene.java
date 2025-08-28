@@ -41,6 +41,7 @@ public class Serene {
                     for (int i = 0; i < history.size(); i++) {
                         System.out.println((i + 1) + ". " + history.get(i));
                     }
+<<<<<<< HEAD
                     break;
                 case DELETE: {
                     int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
@@ -103,6 +104,69 @@ public class Serene {
                 }
                 default:
                     throw new SereneException("um...what?");
+=======
+                    case MARK: {
+                        int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
+                        Task toMark = history.get(indexToMark);
+                        toMark.mark();
+                        ui.showMessage("Nice! I've marked this task as done:");
+                        System.out.println(toMark.toString());
+                        storage.save(history);
+                        break;
+                    }
+                    case UNMARK: {
+                        int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
+                        Task toUnmark = history.get(indexToUnmark);
+                        toUnmark.unmark();
+                        ui.showMessage("Ok, I've marked this task as not done yet:");
+                        System.out.println(toUnmark);
+                        storage.save(history);
+                        break;
+                    }
+                    case TODO: {
+                        Task task = new ToDo(command.getArguments().get(0));
+                        history.add(task);
+                        ui.showMessage("Got it. I've added this task:");
+                        System.out.println(task);
+                        String message = String.format("Now you have %d tasks in the list.", history.size());
+                        ui.showMessage(message);
+                        storage.save(history);
+                        break;
+                    }
+                    case DEADLINE: {
+                        List<String> parts = command.getArguments();
+                        Task task = new Deadline(parts.get(0), parts.get(1));
+                        history.add(task);
+                        ui.showMessage("Got it. I've added this task:");
+                        System.out.println(task);
+                        String message = String.format("Now you have %d tasks in the list.", history.size());
+                        ui.showMessage(message);
+                        storage.save(history);
+                        break;
+                    }
+                    case EVENT: {
+                        List<String> parts = command.getArguments();
+                        Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
+                        history.add(task);
+                        ui.showMessage("Got it. I've added this task:");
+                        System.out.println(task);
+                        String message = String.format("Now you have %d tasks in the list.", history.size());
+                        ui.showMessage(message);
+                        storage.save(history);
+                        break;
+                    }
+                    case FIND: {
+                        String keyword = command.getArguments().get(0);
+                        TaskList tasks = history.find(keyword);
+                        ui.showMessage("Here are the matching tasks in your list:");
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println((i + 1) + ". " + tasks.get(i));
+                        }
+                        break;
+                    }
+                    default:
+                        throw new SereneException("um...what?");
+>>>>>>> branch-Level-9
                 }
 
             } catch (SereneException e) {
@@ -110,6 +174,7 @@ public class Serene {
             }
         }
     }
+
 
     public static void main(String[] args) {
         new Serene("data/serene.txt").run();

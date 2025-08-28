@@ -14,13 +14,18 @@ public class Parser {
                 return new Command(CommandType.LIST);
             case "bye":
                 return new Command(CommandType.BYE);
-            case "mark":
+            case "mark": {
                 String index = parts[1];
                 return new Command(CommandType.MARK, List.of(index));
-            case "unmark":
-                return new Command(CommandType.UNMARK);
-            case "delete":
-                return new Command(CommandType.DELETE);
+            }
+            case "unmark": {
+                String index = parts[1];
+                return new Command(CommandType.UNMARK, List.of(index));
+            }
+            case "delete": {
+                String index = parts[1];
+                return new Command(CommandType.DELETE, List.of(index));
+            }
             case "todo":
                 return new Command(CommandType.TODO, List.of(parts[1]));
             case "deadline": {

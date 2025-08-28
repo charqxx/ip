@@ -42,7 +42,7 @@ public class Storage {
     }
 
     public TaskList load() {
-        TaskList history = new TaskList(new ArrayList<Task>());
+        TaskList history = new TaskList();
         try {
             File file = new File(filePath);
             Scanner sc = new Scanner(file);

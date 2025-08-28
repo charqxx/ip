@@ -21,9 +21,9 @@ public class Storage {
             if (parentDir != null && !parentDir.exists()) {
                 parentDir.mkdir();
             }
-             if (!file.exists()) {
-                 file.createNewFile();
-             }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
         } catch (IOException e) {
             System.out.println("Error while creating save file: " + e.getMessage());
         }
@@ -33,7 +33,7 @@ public class Storage {
         try {
             FileWriter fw = new FileWriter(filePath);
             for (int i = 0; i < tasks.size(); i++) {
-                fw.write(tasks.get(i).toSaveFormat() +  "\n");
+                fw.write(tasks.get(i).toSaveFormat() + "\n");
             }
             fw.close();
         } catch (IOException e) {
@@ -46,7 +46,7 @@ public class Storage {
         try {
             File file = new File(filePath);
             Scanner sc = new Scanner(file);
-            while(sc.hasNextLine()) {
+            while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 String[] parts = line.split(" , ");
                 String type = parts[0];

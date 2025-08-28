@@ -29,11 +29,11 @@ public class Storage {
         }
     }
 
-    public void save(ArrayList<Task> tasks) {
+    public void save(TaskList tasks) {
         try {
             FileWriter fw = new FileWriter(filePath);
-            for (Task task : tasks) {
-                fw.write(task.toSaveFormat() +  "\n");
+            for (int i = 0; i < tasks.size(); i++) {
+                fw.write(tasks.get(i).toSaveFormat() +  "\n");
             }
             fw.close();
         } catch (IOException e) {
@@ -41,8 +41,8 @@ public class Storage {
         }
     }
 
-    public ArrayList<Task> load() {
-        ArrayList<Task> history = new ArrayList<>();
+    public TaskList load() {
+        TaskList history = new TaskList(new ArrayList<Task>());
         try {
             File file = new File(filePath);
             Scanner sc = new Scanner(file);

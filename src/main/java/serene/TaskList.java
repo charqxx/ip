@@ -5,9 +5,8 @@ import java.util.ArrayList;
 public class TaskList {
     private ArrayList<Task> tasks;
 
-    public TaskList(Task task) {
-        tasks = new ArrayList<>();
-        tasks.add(task);
+    public TaskList(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public void add(Task task) {
@@ -16,6 +15,14 @@ public class TaskList {
 
     public void remove(int index) {
         tasks.remove((index));
+    }
+
+    public Task get(int index) {
+        return tasks.get(index);
+    }
+
+    public int size() {
+        return tasks.size();
     }
 
 }

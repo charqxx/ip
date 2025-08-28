@@ -98,6 +98,15 @@ public class Serene {
                         storage.save(history);
                         break;
                     }
+                    case FIND: {
+                        String keyword = command.getArguments().get(0);
+                        TaskList tasks = history.find(keyword);
+                        ui.showMessage("Here are the matching tasks in your list:");
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println((i + 1) + ". " + tasks.get(i));
+                        }
+                        break;
+                    }
                     default:
                         throw new SereneException("um...what?");
                 }
@@ -107,6 +116,7 @@ public class Serene {
             }
         }
     }
+
 
     public static void main(String[] args) {
         new Serene("data/serene.txt").run();

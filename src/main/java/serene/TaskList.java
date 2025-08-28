@@ -29,4 +29,15 @@ public class TaskList {
         return tasks.size();
     }
 
+    public TaskList find(String keyword) {
+        TaskList result = new TaskList();
+        for(int i = 0; i < tasks.size(); i++) {
+            Task curr = tasks.get(i);
+            if (curr.getDescription().contains(keyword)) {
+                result.add(curr);
+            }
+        }
+        return result;
+    }
+
 }

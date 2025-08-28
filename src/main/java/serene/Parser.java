@@ -40,6 +40,11 @@ public class Parser {
                 String to = fromTo.split(" /to ")[1];
                 return new Command(CommandType.EVENT, List.of(task, from, to));
             }
+
+            case "find": {
+                String keyword = parts[1];
+                return new Command(CommandType.FIND, List.of(keyword));
+            }
             default:
                 throw new SereneException("um...what?");
         }

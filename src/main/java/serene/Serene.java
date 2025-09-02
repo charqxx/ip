@@ -29,8 +29,8 @@ public class Serene extends Application {
     private TextField userInput;
     private Button sendButton;
     private Scene scene;
-    private Image userImage = new Image(getClass().getResourceAsStream("/images/Person.png"));
-    private Image dukeImage = new Image(getClass().getResourceAsStream("/images/img.png"));
+    private Image dukeImage = new Image(getClass().getResourceAsStream("/images/Person.png"));
+    private Image userImage = new Image(getClass().getResourceAsStream("/images/img.png"));
 
     public Serene(String filePath) {
         ui = new Ui();
@@ -57,8 +57,6 @@ public class Serene extends Application {
         sendButton = new Button("Send");  // existing code
 
         System.out.println(getClass().getResource("/images/DaUser.png"));
-        DialogBox dialogBox = new DialogBox("Hello!", userImage);
-        dialogContainer.getChildren().addAll(dialogBox);
 
         AnchorPane mainLayout = new AnchorPane();  // existing code
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
@@ -95,6 +93,26 @@ public class Serene extends Application {
 
         AnchorPane.setLeftAnchor(userInput, 1.0);
         AnchorPane.setBottomAnchor(userInput, 1.0);
+
+        //Handling user input
+        sendButton.setOnMouseClicked((event) -> {
+            handleUserInput();
+        });
+        userInput.setOnAction((event) -> {
+            handleUserInput();
+        });
+
+        //Scroll down to the end every time dialogContainer's height changes.
+        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
+    }
+
+    /**
+     * Creates a dialog box containing user input, and appends it to
+     * the dialog container. Clears the user input after processing.
+     */
+    private void handleUserInput() {
+        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        userInput.clear();
     }
 
     /**

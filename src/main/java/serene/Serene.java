@@ -1,10 +1,14 @@
 package serene;
 
 import java.util.List;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
-//ui, storage, parser, tasklist
-public class Serene {
+public class Serene extends Application {
 
+    private static final String DEFAULT_FILE_PATH = "data/serene.txt";
     private Storage storage;
     private TaskList history;
     private Ui ui;
@@ -16,6 +20,20 @@ public class Serene {
         history = storage.load();
         //ui.showLoadingError();
         //history = new TaskList();
+    }
+
+    // Overloaded constructor
+    public Serene() {
+        this(DEFAULT_FILE_PATH);
+    }
+
+    @Override
+    public void start(Stage stage) {
+        Label helloWorld = new Label("Hello World!"); // Creating a new Label control
+        Scene scene = new Scene(helloWorld); // Setting the scene to be our Label
+
+        stage.setScene(scene); // Setting the stage to show our scene
+        stage.show(); // Render the stage.
     }
 
     /**

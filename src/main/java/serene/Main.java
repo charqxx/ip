@@ -85,6 +85,7 @@ public class Main extends Application {
         dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
     }
 
+
     /**
      * Creates a dialog box containing user input, and appends it to
      * the dialog container. Clears the user input after processing.
@@ -93,8 +94,8 @@ public class Main extends Application {
         String userText = userInput.getText();
         String dukeText = serene.getResponse(userInput.getText());
         dialogContainer.getChildren().addAll(
-                new DialogBox(userText, userImage),
-                new DialogBox(dukeText, dukeImage)
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getDukeDialog(dukeText, dukeImage)
         );
         userInput.clear();
     }

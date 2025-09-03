@@ -55,6 +55,26 @@ public class DialogBox extends HBox {
     public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        //db.changeDialogStyle(commandType);
         return db;
+    }
+
+    private void changeDialogStyle(String commandType) {
+        switch(commandType) {
+        case "TODO":
+        case "DEADLINE":
+        case "EVENT":
+            dialog.getStyleClass().add("add-label");
+            break;
+        case "MARK":
+        case "UNMARK":
+            dialog.getStyleClass().add("marked-label");
+            break;
+        case "DELETE":
+            dialog.getStyleClass().add("delete-label");
+            break;
+        default:
+            // Do nothing
+        }
     }
 }

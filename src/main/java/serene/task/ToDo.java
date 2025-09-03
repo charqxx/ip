@@ -1,4 +1,4 @@
-package serene;
+package serene.task;
 
 public class ToDo extends Task {
 

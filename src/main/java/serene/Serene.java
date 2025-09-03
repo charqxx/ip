@@ -1,5 +1,16 @@
 package serene;
 
+import serene.command.Command;
+import serene.exception.SereneException;
+import serene.parser.Parser;
+import serene.storage.Storage;
+import serene.task.Task;
+import serene.task.ToDo;
+import serene.task.Deadline;
+import serene.task.Event;
+import serene.task.TaskList;
+import serene.ui.Ui;
+
 import java.util.List;
 
 
@@ -31,7 +42,6 @@ public class Serene {
             try {
                 String input = ui.getUserInput();
                 Command command = Parser.parse(input);
-                //String[] parts = input.split(" ");
                 switch (command.getType()) {
                 case EMPTY:
                     throw new SereneException("Don't be lazy, you have to do something!");

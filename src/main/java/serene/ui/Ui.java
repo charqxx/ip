@@ -1,4 +1,4 @@
-package serene;
+package serene.ui;
 
 import java.util.Scanner;
 

@@ -18,7 +18,6 @@ public class Ui {
     }
 
     public String getUserInput() {
-        //System.out.println(prompt + ":");
         return scanner.nextLine();
     }
 

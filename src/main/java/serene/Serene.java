@@ -44,7 +44,8 @@ public class Serene {
             try {
                 String input = ui.getUserInput();
                 Command command = Parser.parse(input);
-                //commandType = command.getType().name();
+                commandType = command.getType().name();
+                System.out.println(commandType);
                 switch (command.getType()) {
                 case EMPTY:
                     throw new SereneException("Don't be lazy, you have to do something!");
@@ -147,6 +148,7 @@ public class Serene {
     public String getResponse(String input) {
         try {
             Command command = Parser.parse(input);
+            commandType = command.getType().name();
             switch (command.getType()) {
             case EMPTY:
                 throw new SereneException("Don't be lazy, you have to do something!");
@@ -227,8 +229,8 @@ public class Serene {
         }
     }
 
-   // public String getCommandType() {
-   //     return commandType;
-   // }
+   public String getCommandType() {
+       return commandType;
+   }
 
 }

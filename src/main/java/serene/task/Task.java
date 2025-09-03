@@ -1,4 +1,4 @@
-package serene;
+package serene.task;
 
 public abstract class Task {
     protected String description;

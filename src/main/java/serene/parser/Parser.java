@@ -1,4 +1,8 @@
-package serene;
+package serene.parser;
+
+import serene.exception.SereneException;
+import serene.command.Command;
+import serene.command.CommandType;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package serene;
+package serene.exception;
 
 public class SereneException extends Exception {
     public SereneException(String message) {

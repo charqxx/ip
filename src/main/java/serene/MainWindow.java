@@ -24,12 +24,15 @@ public class MainWindow extends AnchorPane {
 
     private Serene serene;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/img.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/Person.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/img_2.png"));
+    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/img.png"));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.getChildren().add(
+                DialogBox.getDukeDialog("Hello! I'm Serene 😄\nWhat can I do for you today?", dukeImage)
+        );
     }
 
     /** Injects the Duke instance */
@@ -48,7 +51,7 @@ public class MainWindow extends AnchorPane {
         String commandType = serene.getCommandType();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage, commandType)
+                DialogBox.getDukeDialog(response, dukeImage)
         );
         userInput.clear();
     }

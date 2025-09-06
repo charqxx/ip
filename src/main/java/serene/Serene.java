@@ -22,6 +22,7 @@ public class Serene {
     private Storage storage;
     private TaskList history;
     private Ui ui;
+    private Gui gui;
     private String commandType;
 
     public Serene(String filePath) {
@@ -36,6 +37,7 @@ public class Serene {
     }
     /**
      * Starts main execution loop of Serene and continuously reads user input until exit command is received.
+     * Prints out results on the terminal.
      */
     public void run() {
         boolean isRunning = true;
@@ -119,11 +121,11 @@ public class Serene {
                     break;
                 }
                 case FIND: {
-                    String keyword = command.getArguments().get(0);
-                    TaskList tasks = history.find(keyword);
-                    ui.showMessage("Here are the matching tasks in your list:");
+                    String[] keywords = command.getArguments().toArray(new String[0]);
+                    TaskList tasks = history.find(keywords);
+                    ui.showMessage("Here are the matching tasks in your list:\n");
                     for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + ". " + tasks.get(i));
+                        ui.showMessage(i + 1 + ". " + tasks.get(i).toString() + "\n");
                     }
                     break;
                 }
@@ -153,13 +155,13 @@ public class Serene {
             case EMPTY:
                 throw new SereneException("Don't be lazy, you have to do something!");
             case BYE:
-                return ui.exitMessage();
+                return gui.exitMessage();
             case LIST: {
-                String message = "Here are the tasks in your list:\n";
+                StringBuilder message = new StringBuilder("Here are the tasks in your list:\n");
                 for (int i = 0; i < history.size(); i++) {
-                    message = message + (i + 1) + ". " + history.get(i).toString() + "\n";
+                    message.append(i + 1).append(". ").append(history.get(i).toString()).append("\n");
                 }
-                return message;
+                return message.toString();
             }
             case DELETE: {
                 int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
@@ -212,13 +214,13 @@ public class Serene {
                 return addedMessage + task.toString() + "\n" + countMessage;
             }
             case FIND: {
-                String keyword = command.getArguments().get(0);
-                TaskList tasks = history.find(keyword);
-                String message = "Here are the matching tasks in your list:\n";
+                String[] keywords = command.getArguments().toArray(new String[0]);
+                TaskList tasks = history.find(keywords);
+                StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
                 for (int i = 0; i < tasks.size(); i++) {
-                    message = message+ (i + 1) + ". " + tasks.get(i).toString() + "\n";
+                    sb.append(i + 1 + ". " + tasks.get(i).toString() + "\n");
                 }
-                return message;
+                return sb.toString();
             }
             default:
                 throw new SereneException("um...what?");

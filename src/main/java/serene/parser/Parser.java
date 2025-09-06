@@ -4,6 +4,7 @@ import serene.exception.SereneException;
 import serene.command.Command;
 import serene.command.CommandType;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
@@ -53,8 +54,8 @@ public class Parser {
             }
 
             case "find": {
-                String keyword = parts[1];
-                return new Command(CommandType.FIND, List.of(keyword));
+                String[] keywords = parts[1].split(" ");
+                return new Command(CommandType.FIND, Arrays.asList(keywords));
             }
             default:
                 throw new SereneException("um...what?");

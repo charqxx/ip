@@ -9,19 +9,19 @@ public class Ui {
         scanner = new Scanner(System.in);
     }
 
-    public String showWelcome() {
-        return "Hello! I'm Serene\nWhat can I do for you?";
+    public void showWelcome() {
+        System.out.println("Hello! I'm Serene\nWhat can I do for you?");
     }
 
-    public String exitMessage() {
-        return "Bye. Hope to see you again soon!";
+    public void exitMessage() {
+        System.out.println("Bye. Hope to see you again soon!");
     }
 
     public String getUserInput() {
         return scanner.nextLine();
     }
 
-    public String showMessage(String msg) {
-        return msg;
+    public void showMessage(String msg) {
+        System.out.println(msg);
     }
 }

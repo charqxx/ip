@@ -58,12 +58,12 @@ public class Storage {
             File file = new File(filePath);
             Scanner sc = new Scanner(file);
             loadTasksFromFile(sc, tasks);
-            return tasks;
         } catch (IOException e) {
             System.out.println("Something went wrong: " + e.getMessage());
         } catch (SereneException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
+        return tasks;
     }
 
     public void loadTasksFromFile(Scanner scanner, TaskList tasks) throws SereneException, IOException{

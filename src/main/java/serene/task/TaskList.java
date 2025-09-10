@@ -1,4 +1,4 @@
-package serene;
+package serene.task;
 
 import java.util.ArrayList;
 
@@ -42,15 +42,18 @@ public class TaskList {
         return tasks.size();
     }
 
-    public TaskList find(String keyword) {
+    public TaskList find(String ...keywords) {
         TaskList result = new TaskList();
-        for(int i = 0; i < tasks.size(); i++) {
-            Task curr = tasks.get(i);
-            if (curr.getDescription().contains(keyword)) {
-                result.add(curr);
+        for (Task task: tasks) {
+            for (String word : keywords) {
+                if (task.getDescription().contains(word)) {
+                    result.add(task);
+                    break;
+                }
             }
         }
         return result;
     }
+
 
 }

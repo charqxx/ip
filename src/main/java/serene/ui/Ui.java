@@ -1,4 +1,4 @@
-package serene;
+package serene.ui;
 
 import java.util.Scanner;
 
@@ -18,7 +18,6 @@ public class Ui {
     }
 
     public String getUserInput() {
-        //System.out.println(prompt + ":");
         return scanner.nextLine();
     }
 

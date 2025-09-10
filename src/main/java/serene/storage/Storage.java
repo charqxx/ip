@@ -1,9 +1,14 @@
-package serene;
+package serene.storage;
+
+import serene.task.Task;
+import serene.task.TaskList;
+import serene.task.ToDo;
+import serene.task.Deadline;
+import serene.task.Event;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {

@@ -1,6 +1,11 @@
 package serene;
 
 import org.junit.jupiter.api.Test;
+import serene.command.Command;
+import serene.command.CommandType;
+import serene.exception.SereneException;
+import serene.parser.Parser;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -8,7 +13,7 @@ import java.util.List;
 
 public class ParserTest {
     @Test
-    public void parser_emptyInput() throws SereneException{
+    public void parser_emptyInput() throws SereneException {
         assertEquals(new Command(CommandType.EMPTY).getType(), Parser.parse(" ").getType());
     }
 

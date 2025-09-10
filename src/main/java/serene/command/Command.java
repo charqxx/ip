@@ -1,4 +1,4 @@
-package serene;
+package serene.command;
 
 import java.util.List;
 

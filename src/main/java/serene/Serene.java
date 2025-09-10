@@ -63,7 +63,6 @@ public class Serene {
                     Task toDelete = taskList.get(indexToDelete);
                     taskList.remove(indexToDelete);
                     ui.showDelete(toDelete);
-                    storage.save(taskList);
                     break;
                 }
                 case MARK: {
@@ -71,7 +70,6 @@ public class Serene {
                     Task toMark = taskList.get(indexToMark);
                     toMark.mark();
                     ui.showMark(toMark);
-                    storage.save(taskList);
                     break;
                 }
                 case UNMARK: {
@@ -79,14 +77,12 @@ public class Serene {
                     Task toUnmark = taskList.get(indexToUnmark);
                     toUnmark.unmark();
                     ui.showUnmark(toUnmark);
-                    storage.save(taskList);
                     break;
                 }
                 case TODO: {
                     Task task = new ToDo(command.getArguments().get(0));
                     taskList.add(task);
                     ui.showAdded(task, taskList);
-                    storage.save(taskList);
                     break;
                 }
                 case DEADLINE: {
@@ -94,7 +90,6 @@ public class Serene {
                     Task task = new Deadline(parts.get(0), parts.get(1));
                     taskList.add(task);
                     ui.showAdded(task, taskList);
-                    storage.save(taskList);
                     break;
                 }
                 case EVENT: {
@@ -102,18 +97,17 @@ public class Serene {
                     Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
                     taskList.add(task);
                     ui.showAdded(task, taskList);
-                    storage.save(taskList);
                     break;
                 }
                 case FIND: {
                     String[] keywords = command.getArguments().toArray(new String[0]);
                     TaskList tasks = taskList.find(keywords);
-                    ui.showFind(taskList);
                     break;
                 }
                 default:
                     throw new SereneException("um...what?");
                 }
+                storage.save(taskList);
 
             } catch (SereneException e) {
                 System.out.println(e);

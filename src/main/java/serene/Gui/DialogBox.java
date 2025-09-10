@@ -1,4 +1,4 @@
-package serene;
+package serene.Gui;
 import java.io.IOException;
 import java.util.Collections;
 

@@ -1,6 +1,4 @@
-package serene;
-
-import java.util.Scanner;
+package serene.Gui;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package serene;
+package serene.Gui;
 
 import javafx.application.Application;
 

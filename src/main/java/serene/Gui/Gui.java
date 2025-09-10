@@ -20,10 +20,6 @@ public class Gui {
         return "Bye. Hope to see you again soon!";
     }
 
-    public String getUserInput() {
-        return scanner.nextLine();
-    }
-
     public String getList(TaskList taskList) {
         StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
         for (int i = 0; i < taskList.size(); i++) {

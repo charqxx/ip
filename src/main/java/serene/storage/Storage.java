@@ -26,6 +26,7 @@ public class Storage {
             if (parentDir != null && !parentDir.exists()) {
                 parentDir.mkdir();
             }
+
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -37,13 +38,17 @@ public class Storage {
     public void save(TaskList tasks) {
         try {
             FileWriter fw = new FileWriter(filePath);
-            for (int i = 0; i < tasks.size(); i++) {
-                fw.write(tasks.get(i).toSaveFormat() + "\n");
-            }
-            fw.close();
+            writeTasksToFile(fw, tasks);
         } catch (IOException e) {
             System.out.println("Something went wrong: " + e.getMessage());
         }
+    }
+
+    public void writeTasksToFile(FileWriter fileWriter, TaskList tasks) throws IOException {
+        for (int i = 0; i < tasks.size(); i++) {
+            fileWriter.write(tasks.get(i).toSaveFormat() + "\n");
+        }
+        fileWriter.close();
     }
 
     public TaskList load() {

@@ -1,5 +1,6 @@
 package serene.storage;
 
+import serene.exception.SereneException;
 import serene.task.Task;
 import serene.task.TaskList;
 import serene.task.ToDo;
@@ -52,37 +53,45 @@ public class Storage {
     }
 
     public TaskList load() {
-        TaskList history = new TaskList();
+        TaskList tasks = new TaskList();
         try {
             File file = new File(filePath);
             Scanner sc = new Scanner(file);
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                String[] parts = line.split(" , ");
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
-                String TaskName = parts[2];
-
-                if (type.equals("T")) {
-                    Task task = new ToDo(TaskName);
-                    if (isDone) task.mark();
-                    history.add(task);
-                } else if (type.equals("D")) {
-                    Task task = new Deadline(TaskName, parts[3]);
-                    if (isDone) task.mark();
-                    history.add(task);
-                } else if (type.equals("E")) {
-                    String[] fromTo = parts[3].split(" /to ");
-                    Task task = new Event(TaskName, fromTo[0], fromTo[1]);
-                    if (isDone) task.mark();
-                    history.add(task);
-                }
-            }
-            sc.close();
+            loadTasksFromFile(sc, tasks);
+            return tasks;
         } catch (IOException e) {
             System.out.println("Something went wrong: " + e.getMessage());
+        } catch (SereneException e) {
+            System.out.println(e);
         }
-        return history;
+    }
+
+    public void loadTasksFromFile(Scanner scanner, TaskList tasks) throws SereneException, IOException{
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] parts = line.split(" , ");
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String TaskName = parts[2];
+
+            if (type.equals("T")) {
+                Task task = new ToDo(TaskName);
+                if (isDone) task.mark();
+                tasks.add(task);
+            } else if (type.equals("D")) {
+                Task task = new Deadline(TaskName, parts[3]);
+                if (isDone) task.mark();
+                tasks.add(task);
+            } else if (type.equals("E")) {
+                String[] fromTo = parts[3].split(" /to ");
+                Task task = new Event(TaskName, fromTo[0], fromTo[1]);
+                if (isDone) task.mark();
+                tasks.add(task);
+            } else {
+                throw new SereneException("Unable to load file due to invalid entry.");
+            }
+        }
+        scanner.close();
     }
 
 }

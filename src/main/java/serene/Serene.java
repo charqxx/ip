@@ -137,20 +137,23 @@ public class Serene {
             }
             case DELETE: {
                 int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
-                Task toDelete = taskList.get(indexToDelete);
-                taskList.remove(indexToDelete);
-                storage.save(taskList);
+                assert(indexToDelete) >= 0;
+                Task toDelete = history.get(indexToDelete);
+                history.remove(indexToDelete);
+                storage.save(history);
                 return gui.getDeleted(toDelete);
             }
             case MARK: {
                 int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                Task toMark = taskList.get(indexToMark);
+                assert(indexToMark) >= 0;
+                Task toMark = history.get(indexToMark);
                 toMark.mark();
                 storage.save(taskList);
                 return gui.getMarked(toMark);
             }
             case UNMARK: {
                 int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
+                assert(indexToUnmark) >= 0;
                 Task toUnmark = taskList.get(indexToUnmark);
                 storage.save(taskList);
                 return gui.getUnmarked(toUnmark);

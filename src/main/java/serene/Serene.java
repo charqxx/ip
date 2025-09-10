@@ -165,6 +165,7 @@ public class Serene {
             }
             case DELETE: {
                 int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
+                assert(indexToDelete) >= 0;
                 Task toDelete = history.get(indexToDelete);
                 history.remove(indexToDelete);
                 storage.save(history);
@@ -173,6 +174,7 @@ public class Serene {
             }
             case MARK: {
                 int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
+                assert(indexToMark) >= 0;
                 Task toMark = history.get(indexToMark);
                 toMark.mark();
                 storage.save(history);
@@ -181,6 +183,7 @@ public class Serene {
             }
             case UNMARK: {
                 int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
+                assert(indexToUnmark) >= 0;
                 Task toUnmark = history.get(indexToUnmark);
                 toUnmark.unmark();
                 storage.save(history);

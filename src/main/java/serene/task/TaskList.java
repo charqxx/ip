@@ -1,6 +1,7 @@
 package serene.task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -44,16 +45,11 @@ public class TaskList {
 
     public TaskList find(String ...keywords) {
         TaskList result = new TaskList();
-        for (Task task: tasks) {
-            for (String word : keywords) {
-                if (task.getDescription().contains(word)) {
-                    result.add(task);
-                    break;
-                }
-            }
-        }
+        tasks.stream()
+                .filter(task -> Arrays.stream(keywords)
+                                            .anyMatch(keyword -> task.getDescription().contains(keyword)))
+                .forEach(result::add);
         return result;
     }
-
 
 }

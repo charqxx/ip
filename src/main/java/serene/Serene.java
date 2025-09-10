@@ -1,7 +1,7 @@
 package serene;
 
+import serene.Gui.Gui;
 import serene.command.Command;
-import serene.command.CommandType;
 import serene.exception.SereneException;
 import serene.parser.Parser;
 import serene.storage.Storage;
@@ -20,7 +20,7 @@ public class Serene {
 
     private static final String DEFAULT_FILE_PATH = "data/serene.txt";
     private Storage storage;
-    private TaskList history;
+    private TaskList taskList;
     private Ui ui;
     private Gui gui;
     private String commandType;
@@ -29,7 +29,7 @@ public class Serene {
         ui = new Ui();
         storage = new Storage(filePath);
         storage.createSaveFile();
-        history = storage.load();
+        taskList = storage.load();
     }
 
     public Serene() {
@@ -47,91 +47,67 @@ public class Serene {
                 String input = ui.getUserInput();
                 Command command = Parser.parse(input);
                 commandType = command.getType().name();
-                System.out.println(commandType);
                 switch (command.getType()) {
                 case EMPTY:
                     throw new SereneException("Don't be lazy, you have to do something!");
                 case BYE:
-                    ui.exitMessage();
+                    ui.showExit();
                     isRunning = false;
                     break;
                 case LIST:
-                    ui.showMessage("Here are the tasks in your list:");
-                    for (int i = 0; i < history.size(); i++) {
-                        System.out.println((i + 1) + ". " + history.get(i));
-                    }
+                    ui.showList(taskList);
                     break;
                 case DELETE: {
                     int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
-                    Task toDelete = history.get(indexToDelete);
-                    history.remove(indexToDelete);
-                    ui.showMessage("Noted. I've removed this task:");
-                    System.out.println(toDelete);
-                    storage.save(history);
+                    Task toDelete = taskList.get(indexToDelete);
+                    taskList.remove(indexToDelete);
+                    ui.showDeleted(toDelete);
                     break;
                 }
                 case MARK: {
                     int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                    Task toMark = history.get(indexToMark);
+                    Task toMark = taskList.get(indexToMark);
                     toMark.mark();
-                    ui.showMessage("Nice! I've marked this task as done:");
-                    System.out.println(toMark.toString());
-                    storage.save(history);
+                    ui.showMarked(toMark);
                     break;
                 }
                 case UNMARK: {
                     int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                    Task toUnmark = history.get(indexToUnmark);
+                    Task toUnmark = taskList.get(indexToUnmark);
                     toUnmark.unmark();
-                    ui.showMessage("Ok, I've marked this task as not done yet:");
-                    System.out.println(toUnmark);
-                    storage.save(history);
+                    ui.showUnmarked(toUnmark);
                     break;
                 }
                 case TODO: {
                     Task task = new ToDo(command.getArguments().get(0));
-                    history.add(task);
-                    ui.showMessage("Got it. I've added this task:");
-                    System.out.println(task);
-                    String message = String.format("Now you have %d tasks in the list.", history.size());
-                    ui.showMessage(message);
-                    storage.save(history);
+                    taskList.add(task);
+                    ui.showAdded(task, taskList);
                     break;
                 }
                 case DEADLINE: {
                     List<String> parts = command.getArguments();
                     Task task = new Deadline(parts.get(0), parts.get(1));
-                    history.add(task);
-                    ui.showMessage("Got it. I've added this task:");
-                    System.out.println(task);
-                    String message = String.format("Now you have %d tasks in the list.", history.size());
-                    ui.showMessage(message);
-                    storage.save(history);
+                    taskList.add(task);
+                    ui.showAdded(task, taskList);
                     break;
                 }
                 case EVENT: {
                     List<String> parts = command.getArguments();
                     Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
-                    history.add(task);
-                    ui.showMessage("Got it. I've added this task:");
-                    System.out.println(task);
-                    String message = String.format("Now you have %d tasks in the list.", history.size());
-                    ui.showMessage(message);
-                    storage.save(history);
+                    taskList.add(task);
+                    ui.showAdded(task, taskList);
                     break;
                 }
                 case FIND: {
                     String[] keywords = command.getArguments().toArray(new String[0]);
-                    TaskList tasks = history.find(keywords);
-                    ui.showMessage("Here are the matching tasks in your list:\n");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        ui.showMessage(i + 1 + ". " + tasks.get(i).toString() + "\n");
-                    }
+                    TaskList tasks = taskList.find(keywords);
+                    ui.showFound(tasks);
                     break;
                 }
                 default:
                     throw new SereneException("um...what?");
                 }
+                storage.save(taskList);
 
             } catch (SereneException e) {
                 System.out.println(e);
@@ -155,13 +131,9 @@ public class Serene {
             case EMPTY:
                 throw new SereneException("Don't be lazy, you have to do something!");
             case BYE:
-                return gui.exitMessage();
+                return gui.showExit();
             case LIST: {
-                StringBuilder message = new StringBuilder("Here are the tasks in your list:\n");
-                for (int i = 0; i < history.size(); i++) {
-                    message.append(i + 1).append(". ").append(history.get(i).toString()).append("\n");
-                }
-                return message.toString();
+                return gui.getList(taskList);
             }
             case DELETE: {
                 int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
@@ -169,66 +141,51 @@ public class Serene {
                 Task toDelete = history.get(indexToDelete);
                 history.remove(indexToDelete);
                 storage.save(history);
-                String message = "Noted. I've removed this task:\n";
-                return message + toDelete.toString();
+                return gui.getDeleted(toDelete);
             }
             case MARK: {
                 int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
                 assert(indexToMark) >= 0;
                 Task toMark = history.get(indexToMark);
                 toMark.mark();
-                storage.save(history);
-                String message = "Nice! I've marked this task as done:\n";
-                return message + toMark.toString();
+                storage.save(taskList);
+                return gui.getMarked(toMark);
             }
             case UNMARK: {
                 int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
                 assert(indexToUnmark) >= 0;
-                Task toUnmark = history.get(indexToUnmark);
-                toUnmark.unmark();
-                storage.save(history);
-                String message = "Ok, I've marked this task as not done yet:\n";
-                return message + toUnmark.toString();
+                Task toUnmark = taskList.get(indexToUnmark);
+                storage.save(taskList);
+                return gui.getUnmarked(toUnmark);
             }
             case TODO: {
                 Task task = new ToDo(command.getArguments().get(0));
-                history.add(task);
-                String addedMessage = "Got it. I've added this task:\n";
-                String countMessage = String.format("Now you have %d tasks in the list.", history.size());
-                storage.save(history);
-                return addedMessage + task.toString() + "\n" + countMessage;
+                taskList.add(task);
+                storage.save(taskList);
+                return gui.getAdded(task, taskList);
             }
             case DEADLINE: {
                 List<String> parts = command.getArguments();
                 Task task = new Deadline(parts.get(0), parts.get(1));
-                history.add(task);
-                String addedMessage = "Got it. I've added this task:\n";
-                String countMessage = String.format("Now you have %d tasks in the list.", history.size());
-                storage.save(history);
-                return addedMessage + task.toString() + "\n" + countMessage;
+                taskList.add(task);
+                storage.save(taskList);
+                return gui.getAdded(task, taskList);
             }
             case EVENT: {
                 List<String> parts = command.getArguments();
                 Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
-                history.add(task);
-                String addedMessage = "Got it. I've added this task:\n";
-                String countMessage = String.format("Now you have %d tasks in the list.", history.size());
-                storage.save(history);
-                return addedMessage + task.toString() + "\n" + countMessage;
+                taskList.add(task);
+                storage.save(taskList);
+                return gui.getAdded(task, taskList);
             }
             case FIND: {
                 String[] keywords = command.getArguments().toArray(new String[0]);
-                TaskList tasks = history.find(keywords);
-                StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
-                for (int i = 0; i < tasks.size(); i++) {
-                    sb.append(i + 1 + ". " + tasks.get(i).toString() + "\n");
-                }
-                return sb.toString();
+                TaskList tasks = taskList.find(keywords);
+                return gui.getFound(tasks);
             }
             default:
                 throw new SereneException("um...what?");
             }
-
         } catch (SereneException e) {
             return e.getMessage();
         }

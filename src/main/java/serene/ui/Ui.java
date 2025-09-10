@@ -16,7 +16,7 @@ public class Ui {
         System.out.println("Hello! I'm Serene\nWhat can I do for you?");
     }
 
-    public void exitMessage() {
+    public void showExit() {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
@@ -35,17 +35,17 @@ public class Ui {
         }
     }
 
-    public void showDelete(Task task) {
+    public void showDeleted(Task task) {
         System.out.println("Noted. I've removed this task:");
         System.out.println(task);
     }
 
-    public void showMark(Task task) {
+    public void showMarked(Task task) {
         System.out.println("Nice! I've marked this task as done:");
         System.out.println(task);
     }
 
-    public void showUnmark(Task task) {
+    public void showUnmarked(Task task) {
         System.out.println("Ok, I've marked this task as not done yet:");
         System.out.println(task);
     }
@@ -57,7 +57,7 @@ public class Ui {
         System.out.println(message);
     }
 
-    public void showFind(TaskList taskList) {
+    public void showFound(TaskList taskList) {
         System.out.println("Here are the matching tasks in your list:\n");
         for (int i = 0; i < taskList.size(); i++) {
             System.out.println(i + 1 + ". " + taskList.get(i).toString() + "\n");

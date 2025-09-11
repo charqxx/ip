@@ -138,15 +138,15 @@ public class Serene {
             case DELETE: {
                 int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
                 assert(indexToDelete) >= 0;
-                Task toDelete = history.get(indexToDelete);
-                history.remove(indexToDelete);
-                storage.save(history);
+                Task toDelete = taskList.get(indexToDelete);
+                taskList.remove(indexToDelete);
+                storage.save(taskList);
                 return gui.getDeleted(toDelete);
             }
             case MARK: {
                 int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
                 assert(indexToMark) >= 0;
-                Task toMark = history.get(indexToMark);
+                Task toMark = taskList.get(indexToMark);
                 toMark.mark();
                 storage.save(taskList);
                 return gui.getMarked(toMark);

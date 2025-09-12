@@ -50,8 +50,6 @@ public abstract class Task {
         isDone = false;
     }
 
-    public abstract boolean checkDuplicate(Task AddedTask);
-
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
@@ -64,6 +62,14 @@ public abstract class Task {
             return false;
         }
         return ((Task) obj).getDescription().equals(this.description);
+    }
+
+    public boolean isDuplicate(Task addedTask) {
+        return this.equals(addedTask);
+    }
+
+    public boolean isDuplicateDescription(Task addedTask) {
+        return this.description.equals(addedTask.getDescription());
     }
 }
 

@@ -47,14 +47,23 @@ public class Event extends Task {
     }
 
     @Override
-    public boolean checkDuplicate(Task addedTask) {
-        return this.getClass() == addedTask.getClass() &&
-                checkSameValues((Event) addedTask);
+    public boolean equals(Object obj) {
+        if (this == obj) { return true;}
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        return ((Task) obj).getDescription().equals(this.description)
+                && ((Event) obj).getFrom().equals(this.from)
+                && ((Event) obj).getTo().equals(this.to);
     }
 
-    public boolean checkSameValues(Event addedTask) {
-        return this.getDescription().equals(addedTask.getDescription()) &&
-                this.from == addedTask.getFrom() &&
-                this.to == addedTask.getTo();
+    @Override
+    public boolean isDuplicate(Task addedTask) {
+        return this.equals(addedTask);
+    }
+
+    @Override
+    public boolean isDuplicateDescription(Task addedTask) {
+        return this.description.equals(addedTask.getDescription());
     }
 }

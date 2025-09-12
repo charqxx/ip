@@ -80,6 +80,7 @@ public class Serene {
                 }
                 case TODO: {
                     Task task = new ToDo(command.getArguments().get(0));
+
                     taskList.add(task);
                     ui.showAdded(task, taskList);
                     break;

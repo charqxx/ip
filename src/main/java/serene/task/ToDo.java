@@ -4,6 +4,7 @@ public class ToDo extends Task {
 
     /**
      * Constructs a ToDo task with the given desciption.
+     *
      * @param description Description of Todo task.
      */
     public ToDo(String description) {
@@ -20,9 +21,4 @@ public class ToDo extends Task {
         return "[T]" + super.toString();
     }
 
-    @Override
-    public boolean checkDuplicate(Task addedTask) {
-        return this.getClass() == addedTask.getClass() &&
-                this .getDescription().equals(addedTask.getDescription());
-    }
 }

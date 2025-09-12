@@ -38,13 +38,22 @@ public class Deadline extends Task {
     }
 
     @Override
-    public boolean checkDuplicate(Task addedTask) {
-        return this.getClass() == addedTask.getClass() &&
-                checkSameValues((Deadline) addedTask);
+    public boolean equals(Object obj) {
+        if (this == obj) { return true;}
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+        return ((Task) obj).getDescription().equals(this.description)
+                && ((Deadline) obj).getBy().equals(this.by);
     }
 
-    public boolean checkSameValues(Deadline addedTask) {
-        return this.getDescription().equals(addedTask.getDescription()) &&
-                this.by == addedTask.getBy();
+    @Override
+    public boolean isDuplicate(Task addedTask) {
+        return this.equals(addedTask);
+    }
+
+    @Override
+    public boolean isDuplicateDescription(Task addedTask) {
+        return this.description.equals(addedTask.getDescription());
     }
 }

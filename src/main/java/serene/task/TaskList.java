@@ -2,6 +2,7 @@ package serene.task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -15,6 +16,10 @@ public class TaskList {
      */
     public TaskList() {
         this.tasks = new ArrayList<Task>();
+    }
+
+    public TaskList(Task ...tasks) {
+        this.tasks = new ArrayList<>(List.of(tasks));
     }
 
     /**
@@ -52,14 +57,21 @@ public class TaskList {
         return result;
     }
 
-    public boolean checkDuplicate(TaskList taskList, Task newTask) {
+    public String checkDuplicate(TaskList taskList, Task newTask) {
         for (Task originalTask : tasks) {
-            if (originalTask.checkDuplicate(newTask)) {
-                //ask which task u want(return originalTask and newTask)
-                //throw new DuplicateException(originalTask, newTask)
+            if (originalTask.duplicateExists(newTask)) {
+                //dont add
+            } else if (originalTask.duplicateDescriptionExists(newTask)) {
+                //true add both 3
+                //true add, add and remove other 2
+                //false dont add 1
+                //System.out.println("Which task do you want to choose?");
+                //System.out.println(list + "\n3. Both");
+                //String input = ui.getUserInput();
+                //parse(input);
+                //add Task
             }
         }
-        return false;
     }
 
 }

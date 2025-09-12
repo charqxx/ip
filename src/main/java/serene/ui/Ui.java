@@ -3,6 +3,7 @@ package serene.ui;
 import serene.task.Task;
 import serene.task.TaskList;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -22,6 +23,12 @@ public class Ui {
 
     public String getUserInput() {
         return scanner.nextLine();
+    }
+
+    public String whichTaskToChoose(Task originalTask, Task newTask) {
+        TaskList list =  new TaskList(originalTask, newTask);
+        System.out.println("Which task do you want to choose?");
+        System.out.println(list + "\n3. Both");
     }
 
     public void showList(TaskList taskList) {

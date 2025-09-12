@@ -1,5 +1,6 @@
 package serene.ui;
 
+import serene.command.DuplicateExecution;
 import serene.task.Task;
 import serene.task.TaskList;
 
@@ -51,6 +52,27 @@ public class Ui {
         System.out.println("Got it. I've added this task:");
         System.out.println(task);
         String message = String.format("Now you have %d tasks in the list.", taskList.size());
+        System.out.println(message);
+    }
+
+    public void showAdded(DuplicateExecution executionType, Task originalTask, Task newTask, TaskList tasks) {
+        switch (executionType) {
+        case KEEP:
+            showKept(originalTask, tasks);
+            break;
+        case REPLACE:
+            showKept(newTask, tasks);
+            break;
+        case BOTH:
+            showAdded(newTask, tasks);
+            break;
+        }
+    }
+
+    public void showKept(Task task, TaskList tasks) {
+        System.out.println("I've kept this task:");
+        System.out.println(task);
+        String message = String.format("Now you have %d tasks in the list.", tasks.size());
         System.out.println(message);
     }
 

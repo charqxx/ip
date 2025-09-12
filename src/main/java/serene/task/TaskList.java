@@ -1,15 +1,12 @@
 package serene.task;
 
-import serene.command.Command;
-import serene.command.TaskListExecution;
+import serene.command.DuplicateExecution;
 import serene.parser.Parser;
 import serene.ui.Ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static serene.command.TaskListExecution.BOTH;
 
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -71,20 +68,22 @@ public class TaskList {
     public void addWithDuplicateCheck(Task newTask, Ui ui) {
         for (Task originalTask : tasks) {
             if (originalTask.isDuplicate(newTask)) {
+                ui.showAdded(newTask, this);
                 return;
             }
             if (originalTask.isDuplicateDescription(newTask)) {
                 String input = ui.askWhichToChoose(originalTask, newTask);
-                TaskListExecution executionType = Parser.parseDuplicateSelection(input);
+                DuplicateExecution executionType = Parser.parseDuplicateOptions(input);
                 execute(executionType, originalTask, newTask);
+                ui.showAdded(executionType, originalTask, newTask, this);
                 return;
             }
         }
         tasks.add(newTask);
+        ui.showAdded(newTask, this);
     }
 
-    public void execute(TaskListExecution type, Task originalTask, Task newTask) {
-        System.out.println(type);
+    public void execute(DuplicateExecution type, Task originalTask, Task newTask) {
         switch (type) {
         case KEEP:
             break;

@@ -1,5 +1,5 @@
 package serene.command;
 
-public enum TaskListExecution {
+public enum DuplicateExecution {
     KEEP, REPLACE, BOTH
 }

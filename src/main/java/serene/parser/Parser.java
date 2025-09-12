@@ -1,12 +1,9 @@
 package serene.parser;
 
-import serene.command.TaskListExecution;
+import serene.command.DuplicateExecution;
 import serene.exception.SereneException;
 import serene.command.Command;
 import serene.command.CommandType;
-import serene.task.Task;
-import serene.task.TaskList;
-import serene.ui.Ui;
 
 import java.util.Arrays;
 import java.util.List;
@@ -66,13 +63,13 @@ public class Parser {
         }
     }
 
-    public static TaskListExecution parseDuplicateSelection(String input){
+    public static DuplicateExecution parseDuplicateOptions(String input){
         if (input.equals("1")) {
-            return TaskListExecution.KEEP;
+            return DuplicateExecution.KEEP;
         } else if (input.equals("2")) {
-            return TaskListExecution.REPLACE;
+            return DuplicateExecution.REPLACE;
         } else {
-            return TaskListExecution.BOTH;
+            return DuplicateExecution.BOTH;
         }
     }
 }

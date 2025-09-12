@@ -81,21 +81,18 @@ public class Serene {
                 case TODO: {
                     Task task = new ToDo(command.getArguments().get(0));
                     taskList.addWithDuplicateCheck(task, ui);
-                    ui.showAdded(task, taskList);
                     break;
                 }
                 case DEADLINE: {
                     List<String> parts = command.getArguments();
                     Task task = new Deadline(parts.get(0), parts.get(1));
                     taskList.addWithDuplicateCheck(task, ui);
-                    ui.showAdded(task, taskList);
                     break;
                 }
                 case EVENT: {
                     List<String> parts = command.getArguments();
                     Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
                     taskList.addWithDuplicateCheck(task, ui);
-                    ui.showAdded(task, taskList);
                     break;
                 }
                 case FIND: {
@@ -160,12 +157,8 @@ public class Serene {
             }
             case TODO: {
                 Task task = new ToDo(command.getArguments().get(0));
-                //if (task.checkDuplicate(taskList, task)) {
-                //    break;
-                //}
                 taskList.add(task);
                 storage.save(taskList);
-
                 return gui.getAdded(task, taskList);
 
             }

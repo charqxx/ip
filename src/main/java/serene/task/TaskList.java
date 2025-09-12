@@ -1,8 +1,15 @@
 package serene.task;
 
+import serene.command.Command;
+import serene.command.TaskListExecution;
+import serene.parser.Parser;
+import serene.ui.Ui;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static serene.command.TaskListExecution.BOTH;
 
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -40,6 +47,10 @@ public class TaskList {
         tasks.remove((index));
     }
 
+    public void remove(Task task) {
+        tasks.remove(task);
+    }
+
     public Task get(int index) {
         return tasks.get(index);
     }
@@ -57,21 +68,42 @@ public class TaskList {
         return result;
     }
 
-    public String checkDuplicate(TaskList taskList, Task newTask) {
+    public void addWithDuplicateCheck(Task newTask, Ui ui) {
         for (Task originalTask : tasks) {
-            if (originalTask.duplicateExists(newTask)) {
-                //dont add
-            } else if (originalTask.duplicateDescriptionExists(newTask)) {
-                //true add both 3
-                //true add, add and remove other 2
-                //false dont add 1
-                //System.out.println("Which task do you want to choose?");
-                //System.out.println(list + "\n3. Both");
-                //String input = ui.getUserInput();
-                //parse(input);
-                //add Task
+            if (originalTask.isDuplicate(newTask)) {
+                return;
             }
+            if (originalTask.isDuplicateDescription(newTask)) {
+                String input = ui.askWhichToChoose(originalTask, newTask);
+                TaskListExecution executionType = Parser.parseDuplicateSelection(input);
+                execute(executionType, originalTask, newTask);
+                return;
+            }
+        }
+        tasks.add(newTask);
+    }
+
+    public void execute(TaskListExecution type, Task originalTask, Task newTask) {
+        System.out.println(type);
+        switch (type) {
+        case KEEP:
+            break;
+        case REPLACE:
+            tasks.remove(originalTask);
+            tasks.add(newTask);
+            break;
+        case BOTH:
+            tasks.add(newTask);
+            break;
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            string.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return string.toString();
+    }
 }

@@ -25,12 +25,6 @@ public class Ui {
         return scanner.nextLine();
     }
 
-    public String whichTaskToChoose(Task originalTask, Task newTask) {
-        TaskList list =  new TaskList(originalTask, newTask);
-        System.out.println("Which task do you want to choose?");
-        System.out.println(list + "\n3. Both");
-    }
-
     public void showList(TaskList taskList) {
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskList.size(); i++) {
@@ -65,5 +59,13 @@ public class Ui {
         for (int i = 0; i < taskList.size(); i++) {
             System.out.println(i + 1 + ". " + taskList.get(i).toString() + "\n");
         }
+    }
+
+    public String askWhichToChoose(Task originalTask, Task newTask) {
+        TaskList tasks = new TaskList(originalTask, newTask);
+        System.out.println("Which task do you want to keep?");
+        System.out.println(tasks + "3. Both");
+        String input = getUserInput();
+        return input;
     }
 }

@@ -52,8 +52,4 @@ public class Deadline extends Task {
         return this.equals(addedTask);
     }
 
-    @Override
-    public boolean isDuplicateDescription(Task addedTask) {
-        return this.description.equals(addedTask.getDescription());
-    }
 }

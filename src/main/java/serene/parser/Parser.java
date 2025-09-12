@@ -1,8 +1,12 @@
 package serene.parser;
 
+import serene.command.TaskListExecution;
 import serene.exception.SereneException;
 import serene.command.Command;
 import serene.command.CommandType;
+import serene.task.Task;
+import serene.task.TaskList;
+import serene.ui.Ui;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +63,16 @@ public class Parser {
         }
         default:
             throw new SereneException("um...what?");
+        }
+    }
+
+    public static TaskListExecution parseDuplicateSelection(String input){
+        if (input.equals("1")) {
+            return TaskListExecution.KEEP;
+        } else if (input.equals("2")) {
+            return TaskListExecution.REPLACE;
+        } else {
+            return TaskListExecution.BOTH;
         }
     }
 }

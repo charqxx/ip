@@ -50,6 +50,7 @@ public abstract class Task {
         isDone = false;
     }
 
+    public abstract boolean checkDuplicate(Task AddedTask);
 
     @Override
     public String toString() {

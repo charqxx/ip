@@ -160,9 +160,14 @@ public class Serene {
             }
             case TODO: {
                 Task task = new ToDo(command.getArguments().get(0));
+                //if (task.checkDuplicate(taskList, task)) {
+                //    break;
+                //}
                 taskList.add(task);
                 storage.save(taskList);
+
                 return gui.getAdded(task, taskList);
+
             }
             case DEADLINE: {
                 List<String> parts = command.getArguments();

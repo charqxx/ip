@@ -1,5 +1,8 @@
 package serene.command;
 
+import serene.Gui.Gui;
+import serene.storage.Storage;
+
 import java.util.List;
 
 public class Command {
@@ -34,4 +37,6 @@ public class Command {
     public List<String> getArguments() {
         return arguments;
     }
+
+    //public void execute(Command command, Gui gui, Storage storage);
 }

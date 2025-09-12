@@ -52,4 +52,14 @@ public class TaskList {
         return result;
     }
 
+    public boolean checkDuplicate(TaskList taskList, Task newTask) {
+        for (Task originalTask : tasks) {
+            if (originalTask.checkDuplicate(newTask)) {
+                //ask which task u want(return originalTask and newTask)
+                //throw new DuplicateException(originalTask, newTask)
+            }
+        }
+        return false;
+    }
+
 }

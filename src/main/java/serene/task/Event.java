@@ -22,6 +22,14 @@ public class Event extends Task {
         this.to = LocalDateTime.parse(to, formatter);
     }
 
+    public LocalDateTime getFrom() {
+        return this.from;
+    }
+
+    public LocalDateTime getTo() {
+        return this.to;
+    }
+
     @Override
     public String toSaveFormat() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -36,5 +44,17 @@ public class Event extends Task {
         String fromOutput = from.format(formatter);
         String toOutput = to.format(formatter);
         return "[E]" + super.toString() + " (from: " + fromOutput + " to: " + toOutput + ")";
+    }
+
+    @Override
+    public boolean checkDuplicate(Task addedTask) {
+        return this.getClass() == addedTask.getClass() &&
+                checkSameValues((Event) addedTask);
+    }
+
+    public boolean checkSameValues(Event addedTask) {
+        return this.getDescription().equals(addedTask.getDescription()) &&
+                this.from == addedTask.getFrom() &&
+                this.to == addedTask.getTo();
     }
 }

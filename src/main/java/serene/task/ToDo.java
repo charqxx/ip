@@ -19,4 +19,10 @@ public class ToDo extends Task {
     public String toString() {
         return "[T]" + super.toString();
     }
+
+    @Override
+    public boolean checkDuplicate(Task addedTask) {
+        return this.getClass() == addedTask.getClass() &&
+                this .getDescription().equals(addedTask.getDescription());
+    }
 }

@@ -19,6 +19,10 @@ public class Deadline extends Task {
         this.by = LocalDateTime.parse(by, formatter);
     }
 
+    public LocalDateTime getBy() {
+        return this.by;
+    }
+
     @Override
     public String toSaveFormat() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -31,5 +35,16 @@ public class Deadline extends Task {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
         String dateOutput = by.format(formatter);
         return "[D]" + super.toString() + " (by: " + dateOutput + ")";
+    }
+
+    @Override
+    public boolean checkDuplicate(Task addedTask) {
+        return this.getClass() == addedTask.getClass() &&
+                checkSameValues((Deadline) addedTask);
+    }
+
+    public boolean checkSameValues(Deadline addedTask) {
+        return this.getDescription().equals(addedTask.getDescription()) &&
+                this.by == addedTask.getBy();
     }
 }

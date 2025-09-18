@@ -1,5 +1,6 @@
 package serene;
 
+import serene.exception.IndexOutOfBoundsException;
 import serene.exception.NoMatchingKeywordException;
 import serene.gui.Gui;
 import serene.command.Command;
@@ -86,6 +87,11 @@ public class Serene {
     private String handleDelete(Command command) throws SereneException {
         int index = Integer.parseInt(command.getArguments().get(0)) - 1;
         Task task = taskList.get(index);
+
+        if (index < 0 || index >= taskList.size()) {
+            throw new IndexOutOfBoundsException("Invalid task number: " + (index + 1));
+        }
+        
         taskList.remove(index);
         storage.save(taskList);
         return gui.getDeleted(task);
@@ -93,6 +99,11 @@ public class Serene {
 
     private String handleMark(Command command) throws SereneException {
         int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+
+        if (index < 0 || index >= taskList.size()) {
+            throw new IndexOutOfBoundsException("Invalid task number: " + (index + 1));
+        }
+
         Task task = taskList.get(index);
         task.mark();
         storage.save(taskList);
@@ -101,6 +112,11 @@ public class Serene {
 
     private String handleUnmark(Command command) throws SereneException {
         int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+
+        if (index < 0 || index >= taskList.size()) {
+            throw new IndexOutOfBoundsException("Invalid task number: " + (index + 1));
+        }
+
         Task task = taskList.get(index);
         task.unmark();
         storage.save(taskList);

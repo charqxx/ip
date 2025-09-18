@@ -48,6 +48,10 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = serene.getResponse(input);
+        //debug
+        System.out.println("User input: " + input);
+        System.out.println("Serene response: " + response);
+
         String commandType = serene.getCommandType();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),

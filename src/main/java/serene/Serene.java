@@ -27,6 +27,7 @@ public class Serene {
 
     public Serene(String filePath) {
         ui = new Ui();
+        gui = new Gui();
         storage = new Storage(filePath);
         storage.createSaveFile();
         taskList = storage.load();

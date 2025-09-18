@@ -37,75 +37,69 @@ public class Serene {
     public Serene() {
         this(DEFAULT_FILE_PATH);
     }
-    /**
-     * Starts main execution loop of Serene and continuously reads user input until exit command is received.
-     * Prints out results on the terminal.
-     */
-    public void run() {
-        isRunning = true;
-        ui.showWelcome();
-        while (isRunning) {
-            try {
-                String input = ui.getUserInput();
-                Command command = Parser.parse(input);
-                commandType = command.getType().name();
-                handleCommand(command);
-                storage.save(taskList);
-            } catch (SereneException e) {
-                System.out.println(e.getMessage());
-            }
+
+
+    public String getResponse(String input) {
+        try {
+            Command command = Parser.parse(input);
+            commandType = command.getType().name();
+            return handleCommand(command);
+        } catch (SereneException e) {
+            return e.getMessage();
         }
     }
 
-    private void handleCommand(Command command) throws SereneException {
+    private String handleCommand(Command command) throws SereneException {
         switch (command.getType()) {
-        case EMPTY -> handleEmpty();
-        case BYE -> handleBye();
-        case LIST -> handleList();
-        case DELETE -> handleDelete(command);
-        case MARK -> handleMark(command);
-        case UNMARK -> handleUnmark(command);
-        case TODO, DEADLINE, EVENT -> handleAddTask(command);
-        case FIND -> handleFind(command);
+        case EMPTY -> { return handleEmpty(); }
+        case BYE -> { return handleBye(); }
+        case LIST -> { return handleList(); }
+        case DELETE -> { return handleDelete(command); }
+        case MARK -> { return handleMark(command); }
+        case UNMARK -> { return handleUnmark(command); }
+        case TODO, DEADLINE, EVENT -> { return handleAddTask(command); }
+        case FIND -> { return handleFind(command); }
         default -> throw new SereneException("um...what?");
         }
     }
 
-    private void handleEmpty() throws SereneException {
+    private String handleEmpty() throws SereneException {
         throw new SereneException("Don't be lazy, you have to do something!");
     }
 
-    private void handleBye() {
-        ui.showExit();
-        isRunning = false;
+    private String handleBye() {
+        return gui.showExit();
     }
 
-    private void handleList() {
-        ui.showList(taskList);
+    private String handleList() {
+        return gui.getList(taskList);
     }
 
-    private void handleDelete(Command command) throws SereneException {
+    private String handleDelete(Command command) throws SereneException {
         int index = Integer.parseInt(command.getArguments().get(0)) - 1;
         Task task = taskList.get(index);
         taskList.remove(index);
-        ui.showDeleted(task);
+        storage.save(taskList);
+        return gui.getDeleted(task);
     }
 
-    private void handleMark(Command command) throws SereneException {
+    private String handleMark(Command command) throws SereneException {
         int index = Integer.parseInt(command.getArguments().get(0)) - 1;
         Task task = taskList.get(index);
         task.mark();
-        ui.showMarked(task);
+        storage.save(taskList);
+        return gui.getMarked(task);
     }
 
-    private void handleUnmark(Command command) throws SereneException {
+    private String handleUnmark(Command command) throws SereneException {
         int index = Integer.parseInt(command.getArguments().get(0)) - 1;
         Task task = taskList.get(index);
         task.unmark();
-        ui.showUnmarked(task);
+        storage.save(taskList);
+        return gui.getUnmarked(task);
     }
 
-    private void handleAddTask(Command command) throws SereneException {
+    private String handleAddTask(Command command) throws SereneException {
         Task task;
         List<String> args = command.getArguments();
         switch (command.getType()) {
@@ -115,90 +109,14 @@ public class Serene {
         default -> throw new SereneException("Invalid task type");
         }
         taskList.add(task);
-        ui.showAdded(task, taskList);
+        storage.save(taskList);
+        return gui.getAdded(task, taskList);
     }
 
-    private void handleFind(Command command) {
+    private String handleFind(Command command) {
         String[] keywords = command.getArguments().toArray(new String[0]);
         TaskList result = taskList.find(keywords);
-        ui.showFound(result);
-    }
-
-
-    public static void main(String[] args) {
-        new Serene("data/serene.txt").run();
-    }
-
-    /**
-     * Generates a response for the user's chat message.
-     */
-    public String getResponse(String input) {
-        try {
-            Command command = Parser.parse(input);
-            commandType = command.getType().name();
-            switch (command.getType()) {
-            case EMPTY:
-                throw new SereneException("Don't be lazy, you have to do something!");
-            case BYE:
-                return gui.showExit();
-            case LIST: {
-                return gui.getList(taskList);
-            }
-            case DELETE: {
-                int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
-                assert(indexToDelete) >= 0;
-                Task toDelete = taskList.get(indexToDelete);
-                taskList.remove(indexToDelete);
-                storage.save(taskList);
-                return gui.getDeleted(toDelete);
-            }
-            case MARK: {
-                int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                assert(indexToMark) >= 0;
-                Task toMark = taskList.get(indexToMark);
-                toMark.mark();
-                storage.save(taskList);
-                return gui.getMarked(toMark);
-            }
-            case UNMARK: {
-                int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                assert(indexToUnmark) >= 0;
-                Task toUnmark = taskList.get(indexToUnmark);
-                storage.save(taskList);
-                return gui.getUnmarked(toUnmark);
-            }
-            case TODO: {
-                Task task = new ToDo(command.getArguments().get(0));
-                taskList.add(task);
-                storage.save(taskList);
-                return gui.getAdded(task, taskList);
-
-            }
-            case DEADLINE: {
-                List<String> parts = command.getArguments();
-                Task task = new Deadline(parts.get(0), parts.get(1));
-                taskList.add(task);
-                storage.save(taskList);
-                return gui.getAdded(task, taskList);
-            }
-            case EVENT: {
-                List<String> parts = command.getArguments();
-                Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
-                taskList.add(task);
-                storage.save(taskList);
-                return gui.getAdded(task, taskList);
-            }
-            case FIND: {
-                String[] keywords = command.getArguments().toArray(new String[0]);
-                TaskList tasks = taskList.find(keywords);
-                return gui.getFound(tasks);
-            }
-            default:
-                throw new SereneException("um...what?");
-            }
-        } catch (SereneException e) {
-            return e.getMessage();
-        }
+        return gui.getFound(result);
     }
 
    public String getCommandType() {

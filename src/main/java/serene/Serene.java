@@ -95,9 +95,9 @@ public class Serene {
             storage.save(taskList);
             return gui.getDeleted(task);
         } catch (NumberFormatException e) {
-            throw new InvalidTaskNumberException("Please enter a valid task number.");
+            throw new InvalidTaskNumberException("Enter a TASK NUMBER!!");
         } catch (IndexOutOfBoundsException e) {
-            throw new InvalidTaskNumberException("Task number is out of range.");
+            throw new InvalidTaskNumberException("Task number is out of range. Did you just make it up?");
         }
     }
 
@@ -109,9 +109,9 @@ public class Serene {
             storage.save(taskList);
             return gui.getMarked(task);
         } catch (NumberFormatException e) {
-            throw new InvalidTaskNumberException("Please enter a valid task number.");
+            throw new InvalidTaskNumberException("Enter a TASK NUMBER!!");
         } catch (IndexOutOfBoundsException e) {
-            throw new InvalidTaskNumberException("Task number is out of range.");
+            throw new InvalidTaskNumberException("Task number is out of range. Did you just make it up?");
         }
     }
 
@@ -123,9 +123,9 @@ public class Serene {
             storage.save(taskList);
             return gui.getUnmarked(task);
         } catch (NumberFormatException e) {
-            throw new InvalidTaskNumberException("Please enter a valid task number.");
+            throw new InvalidTaskNumberException("Enter a TASK NUMBER!!");
         } catch (IndexOutOfBoundsException e) {
-            throw new InvalidTaskNumberException("Task number is out of range.");
+            throw new InvalidTaskNumberException("Task number is out of range. Did you just make it up?");
         }
     }
 
@@ -157,7 +157,7 @@ public class Serene {
         String[] keywords = command.getArguments().toArray(new String[0]);
         TaskList result = taskList.find(keywords);
         if (result.isEmpty()) {
-            throw new NoMatchingKeywordException("No tasks found matching the keywords.");
+            throw new NoMatchingKeywordException("Can't find what you're looking for...Are you sure it exists?");
         }
         return gui.getFound(result);
     }

@@ -57,16 +57,21 @@ public class Parser {
     }
 
     private static Command parseTodo(String[] parts) throws SereneException {
-        try {
-            String desc = parts[1].trim();
-            if (desc.isEmpty()) throw new EmptyDescriptionException("Description cannot be empty.");
-            return new Command(CommandType.TODO, List.of(desc));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new EmptyDescriptionException("Description cannot be empty.");
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("What do you want to do?");
         }
+
+        String desc = parts[1].trim();
+        if (desc.isEmpty()) throw new EmptyDescriptionException("What do you want to do?");
+        return new Command(CommandType.TODO, List.of(desc));
+
     }
 
     private static Command parseDeadline(String[] parts) throws SereneException {
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("Deadline must have a description and a date.");
+        }
+
         String[] taskAndDate = parts[1].split(" /by ", 2);
         if (taskAndDate.length < 2 || taskAndDate[0].trim().isEmpty() || taskAndDate[1].trim().isEmpty()) {
             throw new EmptyDescriptionException("Deadline must have a description and a date.");
@@ -75,6 +80,10 @@ public class Parser {
     }
 
     private static Command parseEvent(String[] parts) throws SereneException {
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("Event must have a description, a from and a to date.");
+        }
+
         String[] taskAndFrom = parts[1].split(" /from ", 2);
         if (taskAndFrom.length < 2 || taskAndFrom[0].trim().isEmpty() || taskAndFrom[1].trim().isEmpty()) {
             throw new EmptyDescriptionException("Event must have a description, a from and a to date.");
@@ -88,36 +97,37 @@ public class Parser {
     }
 
     private static Command parseMark(String[] parts) throws SereneException {
-        try {
-            String index = parts[1].trim();
-            return new Command(CommandType.MARK, List.of(index));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InvalidTaskNumberException("Please provide a valid task number to mark.");
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("What do you want to mark?");
         }
+        String index = parts[1].trim();
+        return new Command(CommandType.MARK, List.of(index));
     }
 
     private static Command parseUnmark(String[] parts) throws SereneException {
-        try {
-            String index = parts[1].trim();
-            return new Command(CommandType.UNMARK, List.of(index));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InvalidTaskNumberException("Please provide a valid task number to unmark.");
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("What do you want to unmark?");
         }
+        String index = parts[1].trim();
+        return new Command(CommandType.UNMARK, List.of(index));
     }
 
     private static Command parseDelete(String[] parts) throws SereneException {
-        try {
-            String index = parts[1].trim();
-            return new Command(CommandType.DELETE, List.of(index));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InvalidTaskNumberException("Please provide a valid task number to delete.");
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("What do you want to delete?");
         }
+        String index = parts[1].trim();
+        return new Command(CommandType.DELETE, List.of(index));
     }
 
     private static Command parseFind(String[] parts) throws SereneException {
+        if (parts.length < 2) {
+            throw new EmptyDescriptionException("What do you want to delete?");
+        }
+
         String[] keywords = parts[1].trim().split(" ");
-        if (keywords.length == 0 || (keywords.length == 1 && keywords[0].isEmpty())) {
-            throw new NoMatchingKeywordException("Please provide at least one keyword to search.");
+        if (keywords.length == 0 || keywords.length == 1 && keywords[0].isEmpty()) {
+            throw new NoMatchingKeywordException("Find what exactly?");
         }
         return new Command(CommandType.FIND, Arrays.asList(keywords));
     }

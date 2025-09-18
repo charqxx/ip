@@ -132,41 +132,18 @@ public class Serene {
     private String handleAddTask(Command command) throws SereneException {
         Task task;
         List<String> args = command.getArguments();
-
-        if (args.isEmpty() || args.get(0).trim().isEmpty()) {
-            throw new EmptyDescriptionException("The task description cannot be empty.");
-        }
-
         switch (command.getType()) {
         case TODO: {
             task = new ToDo(args.get(0));
             break;
         }
         case DEADLINE: {
-            try {
-                if (args.get(1).trim().isEmpty()) {
-                    throw new EmptyDescriptionException("Deadline date cannot be empty.");
-                }
-
-                task = new Deadline(args.get(0), args.get(1));
-                break;
-            } catch (DateTimeParseException e) {
-                throw new InvalidDateException("Invalid date format. Please use YYYY-MM-DD HH:mm format.");
-            }
+            task = new Deadline(args.get(0), args.get(1));
+            break;
         }
         case EVENT: {
-            try {
-                if (args.get(1).trim().isEmpty()) {
-                    throw new EmptyDescriptionException("Event start time cannot be empty.");
-                }
-                if (args.get(2).trim().isEmpty()) {
-                    throw new EmptyDescriptionException("Event end time cannot be empty.");
-                }
-                task = new Event(args.get(0), args.get(1), args.get(2));
-                break;
-            } catch (DateTimeParseException e) {
-                throw new InvalidDateException("Invalid date format. Please use YYYY-MM-DD HH:mm format.");
-            }
+            task = new Event(args.get(0), args.get(1), args.get(2));
+            break;
         }
         default:
             throw new SereneException("Invalid task type");

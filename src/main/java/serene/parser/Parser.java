@@ -1,6 +1,9 @@
 package serene.parser;
 
 import serene.command.DuplicateExecution;
+import serene.exception.EmptyDescriptionException;
+import serene.exception.InvalidTaskNumberException;
+import serene.exception.NoMatchingKeywordException;
 import serene.exception.SereneException;
 import serene.command.Command;
 import serene.command.CommandType;
@@ -17,7 +20,7 @@ public class Parser {
      * @throws SereneException If user gives an invalid input.
      */
     public static Command parse(String input) throws SereneException {
-        String[] parts = input.split(" ", 2);
+        String[] parts = input.trim().split(" ", 2);
         String command = parts[0];
 
         switch (command) {
@@ -28,38 +31,94 @@ public class Parser {
         case "bye":
             return new Command(CommandType.BYE);
         case "mark": {
-            String index = parts[1];
-            return new Command(CommandType.MARK, List.of(index));
+            return parseMark(parts);
         }
         case "unmark": {
-            String index = parts[1];
-            return new Command(CommandType.UNMARK, List.of(index));
+            return parseUnmark(parts);
         }
         case "delete": {
-            String index = parts[1];
-            return new Command(CommandType.DELETE, List.of(index));
+            return parseDelete(parts);
         }
         case "todo":
-            return new Command(CommandType.TODO, List.of(parts[1]));
+            return parseTodo(parts);
         case "deadline": {
-            String task = parts[1].split(" /by ")[0];
-            String date = parts[1].split(" /by ")[1];
-            return new Command(CommandType.DEADLINE, List.of(task, date));
+            return parseDeadline(parts);
         }
         case "event": {
-            String task = parts[1].split(" /from ")[0];
-            String fromTo = parts[1].split(" /from ")[1];
-            String from = fromTo.split(" /to ")[0];
-            String to = fromTo.split(" /to ")[1];
-            return new Command(CommandType.EVENT, List.of(task, from, to));
+            return parseEvent(parts);
         }
 
         case "find": {
-            String[] keywords = parts[1].split(" ");
-            return new Command(CommandType.FIND, Arrays.asList(keywords));
+            return parseFind(parts);
         }
         default:
             throw new SereneException("um...what?");
         }
+    }
+
+    private static Command parseTodo(String[] parts) throws SereneException {
+        try {
+            String desc = parts[1].trim();
+            if (desc.isEmpty()) throw new EmptyDescriptionException("Description cannot be empty.");
+            return new Command(CommandType.TODO, List.of(desc));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new EmptyDescriptionException("Description cannot be empty.");
+        }
+    }
+
+    private static Command parseDeadline(String[] parts) throws SereneException {
+        String[] taskAndDate = parts[1].split(" /by ", 2);
+        if (taskAndDate.length < 2 || taskAndDate[0].trim().isEmpty() || taskAndDate[1].trim().isEmpty()) {
+            throw new EmptyDescriptionException("Deadline must have a description and a date.");
+        }
+        return new Command(CommandType.DEADLINE, List.of(taskAndDate[0].trim(), taskAndDate[1].trim()));
+    }
+
+    private static Command parseEvent(String[] parts) throws SereneException {
+        String[] taskAndFrom = parts[1].split(" /from ", 2);
+        if (taskAndFrom.length < 2 || taskAndFrom[0].trim().isEmpty() || taskAndFrom[1].trim().isEmpty()) {
+            throw new EmptyDescriptionException("Event must have a description, a from and a to date.");
+        }
+        String[] fromTo = taskAndFrom[1].split(" /to ", 2);
+        if (fromTo.length < 2 || fromTo[0].trim().isEmpty() || fromTo[1].trim().isEmpty()) {
+            throw new EmptyDescriptionException("Event must have both from and to dates.");
+        }
+        return new Command(CommandType.EVENT,
+                List.of(taskAndFrom[0].trim(), fromTo[0].trim(), fromTo[1].trim()));
+    }
+
+    private static Command parseMark(String[] parts) throws SereneException {
+        try {
+            String index = parts[1].trim();
+            return new Command(CommandType.MARK, List.of(index));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InvalidTaskNumberException("Please provide a valid task number to mark.");
+        }
+    }
+
+    private static Command parseUnmark(String[] parts) throws SereneException {
+        try {
+            String index = parts[1].trim();
+            return new Command(CommandType.UNMARK, List.of(index));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InvalidTaskNumberException("Please provide a valid task number to unmark.");
+        }
+    }
+
+    private static Command parseDelete(String[] parts) throws SereneException {
+        try {
+            String index = parts[1].trim();
+            return new Command(CommandType.DELETE, List.of(index));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InvalidTaskNumberException("Please provide a valid task number to delete.");
+        }
+    }
+
+    private static Command parseFind(String[] parts) throws SereneException {
+        String[] keywords = parts[1].trim().split(" ");
+        if (keywords.length == 0 || (keywords.length == 1 && keywords[0].isEmpty())) {
+            throw new NoMatchingKeywordException("Please provide at least one keyword to search.");
+        }
+        return new Command(CommandType.FIND, Arrays.asList(keywords));
     }
 }

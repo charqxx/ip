@@ -64,6 +64,10 @@ public class TaskList {
         return tasks.size();
     }
 
+    public boolean isEmpty() {
+        return tasks.isEmpty();
+    }
+
     public TaskList find(String ...keywords) {
             TaskList result = new TaskList();
             tasks.stream()

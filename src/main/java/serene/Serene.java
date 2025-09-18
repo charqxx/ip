@@ -1,5 +1,6 @@
 package serene;
 
+import serene.exception.NoMatchingKeywordException;
 import serene.gui.Gui;
 import serene.command.Command;
 import serene.exception.SereneException;
@@ -120,9 +121,12 @@ public class Serene {
         return gui.getAdded(task, taskList);
     }
 
-    private String handleFind(Command command) {
+    private String handleFind(Command command) throws NoMatchingKeywordException {
         String[] keywords = command.getArguments().toArray(new String[0]);
         TaskList result = taskList.find(keywords);
+        if (result.isEmpty()) {
+            throw new NoMatchingKeywordException("No tasks found matching the keywords.");
+        }
         return gui.getFound(result);
     }
 

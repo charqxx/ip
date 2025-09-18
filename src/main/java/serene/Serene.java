@@ -49,6 +49,13 @@ public class Serene {
         }
     }
 
+    /*
+     * Refactored getResponse method with the assistance of ChatGPT (GPT-5 mini).
+     *
+     * How ChatGPT helped:
+     * - Suggested creating helper methods like handleUnmark and handleAddTask
+     *   to simplify and reduce repetition in the switch-case structure.
+     */
     private String handleCommand(Command command) throws SereneException {
         switch (command.getType()) {
         case EMPTY -> { return handleEmpty(); }

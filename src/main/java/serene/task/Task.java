@@ -64,8 +64,8 @@ public abstract class Task {
         return ((Task) obj).getDescription().equals(this.description);
     }
 
-    public boolean isDuplicate(Task addedTask) {
-        return this.equals(addedTask);
+    public boolean isDuplicate(Task other) {
+        return this.description.equals(other.description) && this.getClass() == other.getClass();
     }
 
     public boolean isDuplicateDescription(Task addedTask) {

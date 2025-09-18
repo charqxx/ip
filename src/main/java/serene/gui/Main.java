@@ -1,4 +1,4 @@
-package serene.Gui;
+package serene.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -24,7 +24,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setSerene(serene);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setSerene(serene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

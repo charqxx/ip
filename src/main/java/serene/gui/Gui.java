@@ -1,4 +1,4 @@
-package serene.Gui;
+package serene.gui;
 
 import serene.task.Task;
 import serene.task.TaskList;
@@ -10,10 +10,6 @@ public class Gui {
 
     public Gui() {
         scanner = new Scanner(System.in);
-    }
-
-    public String showWelcome() {
-        return "Hello! I'm Serene\nWhat can I do for you?";
     }
 
     public String showExit() {

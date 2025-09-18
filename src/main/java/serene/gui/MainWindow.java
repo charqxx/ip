@@ -1,4 +1,4 @@
-package serene.Gui;
+package serene.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,11 +31,11 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         dialogContainer.getChildren().add(
-                DialogBox.getDukeDialog("Hello! I'm Serene 😄\nWhat can I do for you today?", dukeImage)
+                DialogBox.getSereneDialog("Hello! I'm Serene 😄\nWhat can I do for you today?", dukeImage)
         );
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Serene instance */
     public void setSerene(Serene s) {
         serene = s;
     }
@@ -51,7 +51,7 @@ public class MainWindow extends AnchorPane {
         String commandType = serene.getCommandType();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getSereneDialog(response, dukeImage)
         );
         userInput.clear();
     }

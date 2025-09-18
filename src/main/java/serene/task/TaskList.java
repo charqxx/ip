@@ -1,6 +1,7 @@
 package serene.task;
 
 import serene.command.DuplicateExecution;
+import serene.exception.SereneException;
 import serene.parser.Parser;
 import serene.ui.Ui;
 
@@ -31,7 +32,14 @@ public class TaskList {
      *
      * @param task Task to be added.
      */
-    public void add(Task task) {
+    public void add(Task task) throws SereneException{
+        if (tasks.contains(task)) {
+            throw new SereneException("This task already exists!");
+        }
+        tasks.add(task);
+    }
+
+    public void addWithoutCheck(Task task) {
         tasks.add(task);
     }
 
@@ -57,44 +65,12 @@ public class TaskList {
     }
 
     public TaskList find(String ...keywords) {
-        TaskList result = new TaskList();
-        tasks.stream()
-                .filter(task -> Arrays.stream(keywords)
-                                            .anyMatch(keyword -> task.getDescription().contains(keyword)))
-                .forEach(result::add);
-        return result;
-    }
-
-    public void addWithDuplicateCheck(Task newTask, Ui ui) {
-        for (Task originalTask : tasks) {
-            if (originalTask.isDuplicate(newTask)) {
-                ui.showAdded(newTask, this);
-                return;
-            }
-            if (originalTask.isDuplicateDescription(newTask)) {
-                String input = ui.askWhichToChoose(originalTask, newTask);
-                DuplicateExecution executionType = Parser.parseDuplicateOptions(input);
-                execute(executionType, originalTask, newTask);
-                ui.showAdded(executionType, originalTask, newTask, this);
-                return;
-            }
-        }
-        tasks.add(newTask);
-        ui.showAdded(newTask, this);
-    }
-
-    public void execute(DuplicateExecution type, Task originalTask, Task newTask) {
-        switch (type) {
-        case KEEP:
-            break;
-        case REPLACE:
-            tasks.remove(originalTask);
-            tasks.add(newTask);
-            break;
-        case BOTH:
-            tasks.add(newTask);
-            break;
-        }
+            TaskList result = new TaskList();
+            tasks.stream()
+                    .filter(task -> Arrays.stream(keywords)
+                            .anyMatch(keyword -> task.getDescription().contains(keyword)))
+                    .forEach(result::addWithoutCheck);
+            return result;
     }
 
     @Override

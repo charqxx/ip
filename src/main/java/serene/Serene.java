@@ -1,6 +1,6 @@
 package serene;
 
-import serene.exception.IndexOutOfBoundsException;
+import serene.exception.InvalidTaskNumberException;
 import serene.exception.NoMatchingKeywordException;
 import serene.gui.Gui;
 import serene.command.Command;
@@ -85,42 +85,45 @@ public class Serene {
     }
 
     private String handleDelete(Command command) throws SereneException {
-        int index = Integer.parseInt(command.getArguments().get(0)) - 1;
-        Task task = taskList.get(index);
-
-        if (index < 0 || index >= taskList.size()) {
-            throw new IndexOutOfBoundsException("Invalid task number: " + (index + 1));
+        try {
+            int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+            Task task = taskList.get(index);
+            taskList.remove(index);
+            storage.save(taskList);
+            return gui.getDeleted(task);
+        } catch (NumberFormatException e) {
+            throw new InvalidTaskNumberException("Please enter a valid task number.");
+        } catch (IndexOutOfBoundsException e) {
+            throw new InvalidTaskNumberException("Task number is out of range.");
         }
-        
-        taskList.remove(index);
-        storage.save(taskList);
-        return gui.getDeleted(task);
     }
 
     private String handleMark(Command command) throws SereneException {
-        int index = Integer.parseInt(command.getArguments().get(0)) - 1;
-
-        if (index < 0 || index >= taskList.size()) {
-            throw new IndexOutOfBoundsException("Invalid task number: " + (index + 1));
+        try {
+            int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+            Task task = taskList.get(index);
+            task.mark();
+            storage.save(taskList);
+            return gui.getMarked(task);
+        } catch (NumberFormatException e) {
+            throw new InvalidTaskNumberException("Please enter a valid task number.");
+        } catch (IndexOutOfBoundsException e) {
+            throw new InvalidTaskNumberException("Task number is out of range.");
         }
-
-        Task task = taskList.get(index);
-        task.mark();
-        storage.save(taskList);
-        return gui.getMarked(task);
     }
 
     private String handleUnmark(Command command) throws SereneException {
-        int index = Integer.parseInt(command.getArguments().get(0)) - 1;
-
-        if (index < 0 || index >= taskList.size()) {
-            throw new IndexOutOfBoundsException("Invalid task number: " + (index + 1));
+        try {
+            int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+            Task task = taskList.get(index);
+            task.unmark();
+            storage.save(taskList);
+            return gui.getUnmarked(task);
+        } catch (NumberFormatException e) {
+            throw new InvalidTaskNumberException("Please enter a valid task number.");
+        } catch (IndexOutOfBoundsException e) {
+            throw new InvalidTaskNumberException("Task number is out of range.");
         }
-
-        Task task = taskList.get(index);
-        task.unmark();
-        storage.save(taskList);
-        return gui.getUnmarked(task);
     }
 
     private String handleAddTask(Command command) throws SereneException {

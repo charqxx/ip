@@ -1,5 +1,6 @@
 package serene;
 
+import serene.exception.InvalidDateException;
 import serene.exception.InvalidTaskNumberException;
 import serene.exception.NoMatchingKeywordException;
 import serene.gui.Gui;
@@ -14,6 +15,7 @@ import serene.task.Event;
 import serene.task.TaskList;
 import serene.ui.Ui;
 
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 
@@ -130,10 +132,28 @@ public class Serene {
         Task task;
         List<String> args = command.getArguments();
         switch (command.getType()) {
-        case TODO -> task = new ToDo(args.get(0));
-        case DEADLINE -> task = new Deadline(args.get(0), args.get(1));
-        case EVENT -> task = new Event(args.get(0), args.get(1), args.get(2));
-        default -> throw new SereneException("Invalid task type");
+        case TODO: {
+            task = new ToDo(args.get(0));
+            break;
+        }
+        case DEADLINE: {
+            try {
+                task = new Deadline(args.get(0), args.get(1));
+                break;
+            } catch (DateTimeParseException e) {
+                throw new InvalidDateException("Invalid date format. Please use YYYY-MM-DD HH:mm format.");
+            }
+        }
+        case EVENT: {
+            try {
+                task = new Event(args.get(0), args.get(1), args.get(2));
+                break;
+            } catch (DateTimeParseException e) {
+                throw new InvalidDateException("Invalid date format. Please use YYYY-MM-DD HH:mm format.");
+            }
+        }
+        default:
+            throw new SereneException("Invalid task type");
         }
         taskList.add(task);
         storage.save(taskList);

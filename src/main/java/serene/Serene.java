@@ -24,6 +24,7 @@ public class Serene {
     private Ui ui;
     private Gui gui;
     private String commandType;
+    private boolean isRunning;
 
     public Serene(String filePath) {
         ui = new Ui();
@@ -41,79 +42,86 @@ public class Serene {
      * Prints out results on the terminal.
      */
     public void run() {
-        boolean isRunning = true;
+        isRunning = true;
         ui.showWelcome();
         while (isRunning) {
             try {
                 String input = ui.getUserInput();
                 Command command = Parser.parse(input);
                 commandType = command.getType().name();
-                switch (command.getType()) {
-                case EMPTY:
-                    throw new SereneException("Don't be lazy, you have to do something!");
-                case BYE:
-                    ui.showExit();
-                    isRunning = false;
-                    break;
-                case LIST:
-                    ui.showList(taskList);
-                    break;
-                case DELETE: {
-                    int indexToDelete = Integer.parseInt(command.getArguments().get(0)) - 1;
-                    Task toDelete = taskList.get(indexToDelete);
-                    taskList.remove(indexToDelete);
-                    ui.showDeleted(toDelete);
-                    break;
-                }
-                case MARK: {
-                    int indexToMark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                    Task toMark = taskList.get(indexToMark);
-                    toMark.mark();
-                    ui.showMarked(toMark);
-                    break;
-                }
-                case UNMARK: {
-                    int indexToUnmark = Integer.parseInt(command.getArguments().get(0)) - 1;
-                    Task toUnmark = taskList.get(indexToUnmark);
-                    toUnmark.unmark();
-                    ui.showUnmarked(toUnmark);
-                    break;
-                }
-                case TODO: {
-                    Task task = new ToDo(command.getArguments().get(0));
-                    taskList.add(task);
-                    ui.showAdded(task, taskList);
-                    break;
-                }
-                case DEADLINE: {
-                    List<String> parts = command.getArguments();
-                    Task task = new Deadline(parts.get(0), parts.get(1));
-                    taskList.add(task);
-                    ui.showAdded(task, taskList);
-                    break;
-                }
-                case EVENT: {
-                    List<String> parts = command.getArguments();
-                    Task task = new Event(parts.get(0), parts.get(1), parts.get(2));
-                    taskList.add(task);
-                    ui.showAdded(task, taskList);
-                    break;
-                }
-                case FIND: {
-                    String[] keywords = command.getArguments().toArray(new String[0]);
-                    TaskList tasks = taskList.find(keywords);
-                    ui.showFound(tasks);
-                    break;
-                }
-                default:
-                    throw new SereneException("um...what?");
-                }
+                handleCommand(command);
                 storage.save(taskList);
-
             } catch (SereneException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private void handleCommand(Command command) throws SereneException {
+        switch (command.getType()) {
+        case EMPTY -> handleEmpty();
+        case BYE -> handleBye();
+        case LIST -> handleList();
+        case DELETE -> handleDelete(command);
+        case MARK -> handleMark(command);
+        case UNMARK -> handleUnmark(command);
+        case TODO, DEADLINE, EVENT -> handleAddTask(command);
+        case FIND -> handleFind(command);
+        default -> throw new SereneException("um...what?");
+        }
+    }
+
+    private void handleEmpty() throws SereneException {
+        throw new SereneException("Don't be lazy, you have to do something!");
+    }
+
+    private void handleBye() {
+        ui.showExit();
+        isRunning = false;
+    }
+
+    private void handleList() {
+        ui.showList(taskList);
+    }
+
+    private void handleDelete(Command command) throws SereneException {
+        int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+        Task task = taskList.get(index);
+        taskList.remove(index);
+        ui.showDeleted(task);
+    }
+
+    private void handleMark(Command command) throws SereneException {
+        int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+        Task task = taskList.get(index);
+        task.mark();
+        ui.showMarked(task);
+    }
+
+    private void handleUnmark(Command command) throws SereneException {
+        int index = Integer.parseInt(command.getArguments().get(0)) - 1;
+        Task task = taskList.get(index);
+        task.unmark();
+        ui.showUnmarked(task);
+    }
+
+    private void handleAddTask(Command command) throws SereneException {
+        Task task;
+        List<String> args = command.getArguments();
+        switch (command.getType()) {
+        case TODO -> task = new ToDo(args.get(0));
+        case DEADLINE -> task = new Deadline(args.get(0), args.get(1));
+        case EVENT -> task = new Event(args.get(0), args.get(1), args.get(2));
+        default -> throw new SereneException("Invalid task type");
+        }
+        taskList.add(task);
+        ui.showAdded(task, taskList);
+    }
+
+    private void handleFind(Command command) {
+        String[] keywords = command.getArguments().toArray(new String[0]);
+        TaskList result = taskList.find(keywords);
+        ui.showFound(result);
     }
 
 

@@ -62,14 +62,4 @@ public class Parser {
             throw new SereneException("um...what?");
         }
     }
-
-    public static DuplicateExecution parseDuplicateOptions(String input){
-        if (input.equals("1")) {
-            return DuplicateExecution.KEEP;
-        } else if (input.equals("2")) {
-            return DuplicateExecution.REPLACE;
-        } else {
-            return DuplicateExecution.BOTH;
-        }
-    }
 }

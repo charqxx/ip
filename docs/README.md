@@ -15,7 +15,7 @@ Got it! I've added this task:
 T |  | Do homework
 ```
 
-## Adding deadlines
+## Adding deadline tasks: `deadline`
 
 Add a task with description and deadline in YYYY-MM-DD HH:mm format.
 
@@ -47,9 +47,19 @@ Marks the task with the given index as done.
 
 Example: `mark 1`
 
+```
+Nice! I've marked this task as done:
+1. T |✅| watch CS2103T lecture
+```
+
 ## Unmarking a task: `unmark`
 
 Unmarks the task with the given index.
+
+```
+Ok, I've marked this task as not done yet:
+1. T |  | watch CS2103T lecture
+```
 
 Example: `unmark 1`
 

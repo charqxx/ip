@@ -1,6 +1,6 @@
 # Serene User Guide
 
-![img.png](img.png)
+![Ui.png](Ui.png)
 
 Serene is your personal productivity assistant designed to help you keep track of tasks, deadlines, recruiter notes, and important events. With its simple command-based interface and clean GUI, Serene makes organizing your schedule effortless.
 

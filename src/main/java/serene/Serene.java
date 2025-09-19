@@ -1,7 +1,5 @@
 package serene;
 
-import serene.exception.EmptyDescriptionException;
-import serene.exception.InvalidDateException;
 import serene.exception.InvalidTaskNumberException;
 import serene.exception.NoMatchingKeywordException;
 import serene.gui.Gui;
@@ -14,9 +12,7 @@ import serene.task.ToDo;
 import serene.task.Deadline;
 import serene.task.Event;
 import serene.task.TaskList;
-import serene.ui.Ui;
 
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 
@@ -26,28 +22,36 @@ public class Serene {
     private static final String DEFAULT_FILE_PATH = "data/serene.txt";
     private Storage storage;
     private TaskList taskList;
-    private Ui ui;
     private Gui gui;
-    private String commandType;
-    private boolean isRunning;
 
+    /**
+     * Constructs a Serene instance using a specified file path for storage.
+     *
+     * @param filePath The file path where tasks will be saved and loaded from.
+     */
     public Serene(String filePath) {
-        ui = new Ui();
         gui = new Gui();
         storage = new Storage(filePath);
         storage.createSaveFile();
         taskList = storage.load();
     }
 
+    /**
+     * Constructs a Serene instance using the default file path.
+     */
     public Serene() {
         this(DEFAULT_FILE_PATH);
     }
 
-
+    /**
+     * Processes the user input and returns Serene's response as a string.
+     *
+     * @param input The user's input command.
+     * @return The response from Serene after processing the command.
+     */
     public String getResponse(String input) {
         try {
             Command command = Parser.parse(input);
-            commandType = command.getType().name();
             return handleCommand(command);
         } catch (SereneException e) {
             return e.getMessage();
@@ -161,9 +165,5 @@ public class Serene {
         }
         return gui.getFound(result);
     }
-
-   public String getCommandType() {
-       return commandType;
-   }
 
 }

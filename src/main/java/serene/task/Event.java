@@ -43,7 +43,7 @@ public class Event extends Task {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
         String fromOutput = from.format(formatter);
         String toOutput = to.format(formatter);
-        return "[E]" + super.toString() + " (from: " + fromOutput + " to: " + toOutput + ")";
+        return "E " + super.toString() + " (from: " + fromOutput + " to: " + toOutput + ")";
     }
 
     @Override

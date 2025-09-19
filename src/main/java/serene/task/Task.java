@@ -18,7 +18,7 @@ public abstract class Task {
 
 
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "✅" : "   "); // mark done task with X
     }
 
     public int getIsDone() {
@@ -52,7 +52,7 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "|" + getStatusIcon() + "| " + description;
     }
 
     @Override

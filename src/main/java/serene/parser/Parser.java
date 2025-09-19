@@ -1,8 +1,6 @@
 package serene.parser;
 
-import serene.command.DuplicateExecution;
 import serene.exception.EmptyDescriptionException;
-import serene.exception.InvalidTaskNumberException;
 import serene.exception.NoMatchingKeywordException;
 import serene.exception.SereneException;
 import serene.command.Command;
@@ -122,7 +120,7 @@ public class Parser {
 
     private static Command parseFind(String[] parts) throws SereneException {
         if (parts.length < 2) {
-            throw new EmptyDescriptionException("What do you want to delete?");
+            throw new EmptyDescriptionException("What do you want to find?");
         }
 
         String[] keywords = parts[1].trim().split(" ");

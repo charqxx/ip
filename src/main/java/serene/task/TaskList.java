@@ -1,9 +1,6 @@
 package serene.task;
 
-import serene.command.DuplicateExecution;
 import serene.exception.SereneException;
-import serene.parser.Parser;
-import serene.ui.Ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +9,6 @@ import java.util.List;
 public class TaskList {
     private ArrayList<Task> tasks;
 
-    public TaskList(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     /**
      * Creates a new empty TaskList.
      */
@@ -23,14 +16,21 @@ public class TaskList {
         this.tasks = new ArrayList<Task>();
     }
 
+    /**
+     * Creates a new TaskList containing the given tasks.
+     *
+     * @param tasks One or more Task objects to initialize the list.
+     */
+
     public TaskList(Task ...tasks) {
         this.tasks = new ArrayList<>(List.of(tasks));
     }
 
     /**
-     * Adds a task into the TaskList.
+     * Adds a task to the TaskList.
      *
-     * @param task Task to be added.
+     * @param task The Task to be added.
+     * @throws SereneException If the task already exists in the list.
      */
     public void add(Task task) throws SereneException{
         if (tasks.contains(task)) {
@@ -39,6 +39,11 @@ public class TaskList {
         tasks.add(task);
     }
 
+    /**
+     * Adds a task to the TaskList without checking for duplicates.
+     *
+     * @param task The Task to be added.
+     */
     public void addWithoutCheck(Task task) {
         tasks.add(task);
     }
@@ -50,10 +55,6 @@ public class TaskList {
      */
     public void remove(int index) {
         tasks.remove((index));
-    }
-
-    public void remove(Task task) {
-        tasks.remove(task);
     }
 
     public Task get(int index) {
@@ -68,6 +69,12 @@ public class TaskList {
         return tasks.isEmpty();
     }
 
+    /**
+     * Searches for tasks whose descriptions contain any of the given keywords.
+     *
+     * @param keywords One or more keywords to search for.
+     * @return A new TaskList containing all matching tasks.
+     */
     public TaskList find(String ...keywords) {
             TaskList result = new TaskList();
             tasks.stream()

@@ -55,6 +55,13 @@ public abstract class Task {
         return "|" + getStatusIcon() + "| " + description;
     }
 
+    /**
+     * Checks whether this task is equal to another task.
+     * Two tasks are considered equal if they are of the same class and have the same description.
+     *
+     * @param obj The object to compare with this task.
+     * @return true if the given object is a Task of the same type and has the same description, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true;}
@@ -64,12 +71,16 @@ public abstract class Task {
         return ((Task) obj).getDescription().equals(this.description);
     }
 
+    /**
+     * Checks whether another task is a duplicate of this task.
+     * A task is considered a duplicate if it has the same description and is of the same class.
+     *
+     * @param other The task to compare with this task.
+     * @return true if the other task is considered a duplicate, false otherwise.
+     */
     public boolean isDuplicate(Task other) {
         return this.description.equals(other.description) && this.getClass() == other.getClass();
     }
 
-    public boolean isDuplicateDescription(Task addedTask) {
-        return this.description.equals(addedTask.getDescription());
-    }
 }
 

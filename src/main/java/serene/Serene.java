@@ -29,7 +29,7 @@ public class Serene {
      *
      * @param filePath The file path where tasks will be saved and loaded from.
      */
-    public Serene(String filePath) {
+    public Serene(String filePath) throws SereneException {
         gui = new Gui();
         storage = new Storage(filePath);
         storage.createSaveFile();
@@ -39,7 +39,7 @@ public class Serene {
     /**
      * Constructs a Serene instance using the default file path.
      */
-    public Serene() {
+    public Serene() throws SereneException {
         this(DEFAULT_FILE_PATH);
     }
 

@@ -25,13 +25,13 @@ public class MainWindow extends AnchorPane {
     private Serene serene;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/img_2.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/img.png"));
+    private Image sereneImage = new Image(this.getClass().getResourceAsStream("/images/img.png"));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         dialogContainer.getChildren().add(
-                DialogBox.getSereneDialog("Hello! I'm Serene 😄\nWhat can I do for you today?", dukeImage)
+                DialogBox.getSereneDialog("Hi! I'm Serene 😄\nWhat can I do for you today?", sereneImage)
         );
     }
 
@@ -48,14 +48,10 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = serene.getResponse(input);
-        //debug
-        System.out.println("User input: " + input);
-        System.out.println("Serene response: " + response);
 
-        String commandType = serene.getCommandType();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getSereneDialog(response, dukeImage)
+                DialogBox.getSereneDialog(response, sereneImage)
         );
         userInput.clear();
     }

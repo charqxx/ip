@@ -34,6 +34,4 @@ public class Command {
     public List<String> getArguments() {
         return arguments;
     }
-
-    //public void execute(Command command, Gui gui, Storage storage);
 }

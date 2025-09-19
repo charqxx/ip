@@ -15,10 +15,19 @@ import java.util.Scanner;
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The path of the file where tasks will be saved and loaded from.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Creates the save file and its parent directories if they do not already exist.
+     * If an error occurs during creation, an error message is printed.
+     */
     public void createSaveFile() {
         try {
             File file = new File(filePath);
@@ -36,6 +45,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves the given TaskList to the save file.
+     * Each task is written in a format suitable for reloading later.
+     *
+     * @param tasks The TaskList containing tasks to save.
+     */
     public void save(TaskList tasks) {
         try {
             FileWriter fw = new FileWriter(filePath);
@@ -45,6 +60,14 @@ public class Storage {
         }
     }
 
+
+    /**
+     * Writes all tasks in the TaskList to the provided FileWriter.
+     *
+     * @param fileWriter The FileWriter to write tasks to.
+     * @param tasks      The TaskList containing tasks to write.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     public void writeTasksToFile(FileWriter fileWriter, TaskList tasks) throws IOException {
         for (int i = 0; i < tasks.size(); i++) {
             fileWriter.write(tasks.get(i).toSaveFormat() + "\n");
@@ -52,20 +75,35 @@ public class Storage {
         fileWriter.close();
     }
 
-    public TaskList load() {
+    /**
+     * Loads tasks from the save file into a new TaskList.
+     * If the file does not exist or an error occurs, an empty TaskList is returned.
+     *
+     * @return A TaskList containing tasks loaded from the file.
+     */
+    public TaskList load() throws SereneException{
         TaskList tasks = new TaskList();
         try {
             File file = new File(filePath);
             Scanner sc = new Scanner(file);
             loadTasksFromFile(sc, tasks);
         } catch (IOException e) {
-            System.out.println("Something went wrong: " + e.getMessage());
+            throw new SereneException("Something went wrong: " + e.getMessage());
         } catch (SereneException e) {
-            System.out.println(e.getMessage());
+            throw new SereneException(e.getMessage());
         }
         return tasks;
     }
 
+    /**
+     * Reads tasks from a Scanner and adds them to the provided TaskList.
+     * Supports ToDo, Deadline, and Event tasks. Marks tasks as done if indicated.
+     *
+     * @param scanner The Scanner to read task lines from.
+     * @param tasks   The TaskList to populate with tasks.
+     * @throws SereneException If an invalid task entry is encountered.
+     * @throws IOException     If an I/O error occurs while reading from the scanner.
+     */
     public void loadTasksFromFile(Scanner scanner, TaskList tasks) throws SereneException, IOException{
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();

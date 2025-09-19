@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import serene.Serene;
+import serene.exception.SereneException;
 
 /**
  * A GUI for Duke using FXML.
@@ -16,6 +17,9 @@ import serene.Serene;
 public class Main extends Application {
 
     private Serene serene = new Serene();
+
+    public Main() throws SereneException {
+    }
 
     @Override
     public void start(Stage stage) {
